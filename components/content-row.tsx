@@ -6,6 +6,7 @@ interface ContentItem {
   title: string
   category: string
   image: string
+  link?: string
 }
 
 interface ContentRowProps {

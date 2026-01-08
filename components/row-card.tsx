@@ -2,7 +2,7 @@
 
 import { Play, Plus, X } from "lucide-react"
 import { useState } from "react"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 
 interface RowCardProps {
@@ -16,6 +16,7 @@ interface RowCardProps {
   rank?: number
   isLearning?: boolean // Added learning state
   progress?: number
+  link?: string
 }
 
 export function RowCard({
@@ -29,6 +30,7 @@ export function RowCard({
   rank,
   isLearning,
   progress = 0,
+  link,
 }: RowCardProps) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -37,6 +39,12 @@ export function RowCard({
     description ||
     `A detailed look into the ${title} project, focusing on ${category.toLowerCase()} implementation and user experience.`
   const displayTags = tags.length > 0 ? tags : [category, "React", "Next.js", "Tailwind"]
+
+  const handleDemoClick = () => {
+    if (link) {
+      window.open(link, '_blank')
+    }
+  }
 
   return (
     <>
@@ -51,6 +59,10 @@ export function RowCard({
         <img
           src={image || "/placeholder.svg"}
           alt={title}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = "/placeholder.svg";
+          }}
           className="object-cover w-full h-full transition-opacity duration-300 group-hover:opacity-40"
         />
 
@@ -85,15 +97,19 @@ export function RowCard({
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-w-4xl p-0 overflow-hidden border-none bg-card sm:rounded-xl shadow-2xl animate-in zoom-in-95 duration-300">
+          <DialogTitle className="sr-only">{title}</DialogTitle>
           <div className="relative aspect-video w-full overflow-hidden">
-            <img src={image || "/placeholder.svg"} alt={title} className="w-full h-full object-cover" />
+            <img src={image || "/placeholder.svg"} alt={title} onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/placeholder.svg";
+                      }} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
 
             <div className="absolute bottom-10 left-10 right-10 z-10">
               <h2 className="text-3xl md:text-5xl font-bold mb-4">{title}</h2>
               <div className="flex gap-4">
-                <Button className="bg-white text-black hover:bg-white/90 font-bold px-8">
-                  <Play className="mr-2 h-5 w-5 fill-current" /> Live Demo
+                <Button className="bg-white text-black hover:bg-white/90 font-bold px-8" onClick={handleDemoClick}>
+                  <Play className="mr-2 h-5 w-5 fill-current" /> {link ? 'Visit Site' : 'Live Demo'}
                 </Button>
                 <Button
                   variant="secondary"
