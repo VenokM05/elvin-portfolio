@@ -22,7 +22,7 @@ export function Hero({ onNavigate, onStartTour, highlighted }: HeroProps) {
     return () => mediaQuery.removeEventListener("change", handler)
   }, [])
 
-  const words = ["Designing", "experiences.", "Building", "futures."]
+  const words = ["Software", "engineer.", "IT", "specialist."]
   const transition = { duration: prefersReducedMotion ? 0 : 0.5, ease: "easeOut" as const }
 
   return (
@@ -54,7 +54,7 @@ export function Hero({ onNavigate, onStartTour, highlighted }: HeroProps) {
           animate={{ opacity: 1 }}
           transition={{ ...transition, delay: 0.6 }}
         >
-          Hi, I&apos;m Elvin. A full-stack developer turning ideas into thoughtful websites, useful applications, and interactive experiences.
+          Hi, I&apos;m Elvin. A software engineer and IT specialist with 10+ years building web applications, interactive games, and the infrastructure behind them.
         </motion.p>
         <motion.div
           className="pf-hero-actions"

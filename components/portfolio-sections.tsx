@@ -1,8 +1,37 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
+import { motion, useInView, useReducedMotion } from "framer-motion"
 import { learningTopics, profile, skillGroups, type SectionId } from "@/lib/portfolio-data"
+
+function AnimatedEyebrow({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { once: true, margin: "-50px" })
+  return (
+    <div ref={ref} className={`pf-eyebrow${isInView ? " pf-eyebrow-visible" : ""} ${className}`}>
+      {children}
+    </div>
+  )
+}
+
+function AnimatedSkillItem({ skill, index }: { skill: string; index: number }) {
+  const ref = useRef<HTMLLIElement>(null)
+  const isInView = useInView(ref, { once: true, margin: "-30px" })
+  const prefersReducedMotion = useReducedMotion()
+  return (
+    <li ref={ref} className="pf-skill-item">
+      <span>{skill}</span>
+      <div className="pf-skill-bar">
+        <motion.div
+          className="pf-skill-bar-fill"
+          initial={{ width: "0%" }}
+          animate={isInView ? { width: "100%" } : { width: "0%" }}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.6, delay: index * 0.08, ease: "easeOut" }}
+        />
+      </div>
+    </li>
+  )
+}
 
 interface PortfolioSectionsProps {
   target?: string
@@ -29,7 +58,7 @@ export function PortfolioIntro() {
       viewport={{ once: true }}
       transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, ease: "easeOut" }}
     >
-      <p><strong>Thoughtful interfaces. Practical solutions.</strong><br />Web development, UI/UX, and interactive experiences.</p>
+      <p><strong>Software engineer & IT specialist.</strong><br />Web apps, interactive games, and infrastructure &mdash; 10+ years of building.</p>
       <div className="pf-strip-links">
         <a className="pf-link" href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)">GitHub ↗</a>
         <a className="pf-link" href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)">LinkedIn ↗</a>
@@ -63,10 +92,10 @@ export function PortfolioSections({ target, onNavigate, onContact }: PortfolioSe
           transition={transition}
         >
           <div className="pf-about-copy">
-            <div className="pf-eyebrow">The person behind the pixels</div>
-            <h2 id="about-title" tabIndex={-1}>Curious by nature.<br />Builder by choice.</h2>
-            <p>I&apos;m Elvin Manuel, a software engineer who enjoys connecting design and development. I build web applications with a focus on clear interfaces and maintainable code.</p>
-            <p>From event registration to interactive games, I like making complex ideas feel simple to use.</p>
+            <AnimatedEyebrow>The person behind the pixels</AnimatedEyebrow>
+            <h2 id="about-title" tabIndex={-1}>A decade of building.<br />Rooted in curiosity.</h2>
+            <p>I&apos;m Elvin Manuel, a software engineer and IT specialist with over 10 years in software development. I started freelancing on small projects back in 2014, sharpening my skills along the way before going professional in 2016.</p>
+            <p>My background spans three worlds &mdash; hardware, networking, and software &mdash; which gives me a full-stack perspective on how systems actually work. From event registration platforms to interactive games and AR experiences, I enjoy turning complex problems into clean, usable solutions.</p>
             <a className="pf-link" href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="More about my background on LinkedIn (opens in a new tab)">More about my background ↗</a>
           </div>
           <div className={`pf-skill-columns${highlight("skills")}`} id="skills" tabIndex={-1} role="region" aria-label="Development skills">
@@ -80,7 +109,10 @@ export function PortfolioSections({ target, onNavigate, onContact }: PortfolioSe
                 transition={{ ...transition, delay: index * 0.1 }}
               >
                 <span className="pf-skill-icon" aria-hidden="true">{group.icon}</span>
-                <h3>{group.title}</h3><ul>{group.skills.map((skill) => <li key={skill}>{skill}</li>)}</ul>
+                <h3>{group.title}</h3>
+                <ul>{group.skills.map((skill, si) => (
+                  <AnimatedSkillItem key={skill} skill={skill} index={si} />
+                ))}</ul>
               </motion.article>
             ))}
           </div>
@@ -95,8 +127,8 @@ export function PortfolioSections({ target, onNavigate, onContact }: PortfolioSe
           viewport={{ once: true, margin: "-100px" }}
           transition={transition}
         >
-          <div><div className="pf-eyebrow">Always exploring</div><h2 id="upcoming-title" tabIndex={-1}>The next chapter</h2></div>
-          <p>A space for upcoming builds and the ideas I&apos;m learning about along the way.</p>
+          <div><AnimatedEyebrow>Always exploring</AnimatedEyebrow><h2 id="upcoming-title" tabIndex={-1}>What&apos;s next</h2></div>
+          <p>Where I&apos;m headed and the technologies I&apos;m investing in to get there.</p>
         </motion.div>
         <motion.div
           className="pf-upcoming-grid"
@@ -106,12 +138,12 @@ export function PortfolioSections({ target, onNavigate, onContact }: PortfolioSe
           transition={{ ...transition, delay: 0.2 }}
         >
           <article className="pf-upcoming-card">
-            <span className="pf-tag">Upcoming · To be announced</span><h3>Room for what&apos;s next.</h3>
-            <p>New project details will appear here when they&apos;re ready to share. No release date has been announced.</p>
-            <a className="pf-link" href="#contact" onClick={(event) => { event.preventDefault(); onNavigate("contact") }}>Have an idea we could build? →</a>
+            <span className="pf-tag">In progress</span><h3>Expanding into Unity.</h3>
+            <p>Building on my game development experience with C# and Unity &mdash; creating richer interactive experiences, from browser-based games to full Unity applications with multiplayer support.</p>
+            <a className="pf-link" href="#contact" onClick={(event) => { event.preventDefault(); onNavigate("contact") }}>Have a project idea? Let&apos;s talk →</a>
           </article>
           <article className="pf-upcoming-card pf-learning" id="learning">
-            <h3>Currently exploring</h3><p>Learning topics, not announced project releases.</p>
+            <h3>Currently exploring</h3><p>Technologies and topics I&apos;m actively learning to expand my skill set.</p>
             <ul className="pf-learning-list">{learningTopics.map((topic) => <li key={topic.title}>{topic.title}<span>{topic.category}</span></li>)}</ul>
           </article>
         </motion.div>
@@ -126,7 +158,7 @@ export function PortfolioSections({ target, onNavigate, onContact }: PortfolioSe
         transition={transition}
       >
         <div>
-          <div className="pf-eyebrow">Your next idea starts with a hello</div>
+          <AnimatedEyebrow>Your next idea starts with a hello</AnimatedEyebrow>
           <h2 id="contact-title" tabIndex={-1}>Let&apos;s build something<br />worth exploring.</h2>
           <p>Have a project in mind or want to talk about my work?<br />I&apos;d love to hear from you.</p>
         </div>

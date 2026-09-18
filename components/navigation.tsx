@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Sun, Moon } from "lucide-react"
 import { useTheme } from "next-themes"
 import { profile, type SectionId } from "@/lib/portfolio-data"
@@ -84,14 +84,28 @@ export function Navigation({ onNavigate, onResume }: NavigationProps) {
           <span>{profile.name}<small>Developer & creative builder</small></span>
         </a>
         <nav id="navigation" className="pf-nav" data-open={open} aria-label="Main navigation">
-          {links.map(({ section, label }) => (
-            <a key={section} href={`#${section}`} aria-current={active === section ? "location" : undefined}
-              onClick={(event) => { event.preventDefault(); navigate(section) }}>{label}</a>
+          {links.map(({ section, label }, index) => (
+            <motion.a
+              key={section}
+              href={`#${section}`}
+              aria-current={active === section ? "location" : undefined}
+              onClick={(event) => { event.preventDefault(); navigate(section) }}
+              initial={open ? { opacity: 0, x: -12 } : false}
+              animate={{ opacity: 1, x: 0 }}
+              transition={open ? { duration: 0.25, delay: index * 0.05, ease: "easeOut" as const } : undefined}
+            >{label}</motion.a>
           ))}
-          <button type="button" className="pf-btn pf-mobile-resume" onClick={() => {
-            setOpen(false)
-            if (toggle.current) onResume(toggle.current)
-          }}>Resume & profile</button>
+          <motion.button
+            type="button"
+            className="pf-btn pf-mobile-resume"
+            onClick={() => {
+              setOpen(false)
+              if (toggle.current) onResume(toggle.current)
+            }}
+            initial={open ? { opacity: 0, x: -12 } : false}
+            animate={{ opacity: 1, x: 0 }}
+            transition={open ? { duration: 0.25, delay: links.length * 0.05, ease: "easeOut" as const } : undefined}
+          >Resume & profile</motion.button>
         </nav>
         {mounted && (
           <button

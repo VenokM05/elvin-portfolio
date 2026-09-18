@@ -37,8 +37,26 @@ export function RowCard({ project, index, onSelect, onViewScreenshot }: RowCardP
         <h3 id={`project-${project.id}`}>{project.title}</h3>
         <p className="pf-description">{project.description}</p>
         <ul className="pf-tags" aria-label="Technologies">
-          {project.tags.slice(0, 3).map((tag) => <li className="pf-tag" key={tag}>{tag}</li>)}
-          {project.tags.length > 3 && <li className="pf-tag" aria-label={`${project.tags.length - 3} more technologies in project details`}>+{project.tags.length - 3}</li>}
+          {project.tags.slice(0, 3).map((tag, i) => (
+            <motion.li
+              className="pf-tag"
+              key={tag}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.2, delay: 0.1 + i * 0.05, ease: "easeOut" as const }}
+            >{tag}</motion.li>
+          ))}
+          {project.tags.length > 3 && (
+            <motion.li
+              className="pf-tag"
+              aria-label={`${project.tags.length - 3} more technologies in project details`}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.2, delay: 0.1 + 3 * 0.05, ease: "easeOut" as const }}
+            >+{project.tags.length - 3}</motion.li>
+          )}
         </ul>
         <div className="pf-card-actions">
           <button type="button" onClick={(event) => onSelect(project, event.currentTarget)} aria-label={`Explore ${project.title}`} aria-haspopup="dialog">Explore project →</button>

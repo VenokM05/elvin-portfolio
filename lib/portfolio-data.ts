@@ -104,13 +104,16 @@ export const projectFilters: { value: ProjectFilter; label: string }[] = [
   { value: "games", label: "Games & AR" },
 ]
 export const skillGroups = [
-  { title: "Frontend & design", icon: "</>", skills: ["React & Next.js", "TypeScript", "Tailwind CSS", "UI/UX design", "Responsive interfaces"] },
-  { title: "Backend & systems", icon: "{ }", skills: ["PHP & Node.js", "MySQL & PostgreSQL", "REST APIs", "Docker", "Application workflows"] },
+  { title: "Frontend & design", icon: "</>", skills: ["React & Next.js", "TypeScript", "Vue.js", "Tailwind CSS", "Responsive UI/UX"] },
+  { title: "Backend & databases", icon: "{ }", skills: ["PHP & Node.js", "MySQL & PostgreSQL", "REST APIs", "Application workflows", "Data architecture"] },
+  { title: "Game development", icon: "\u25B6", skills: ["C# & Unity", "Interactive game mechanics", "AR experiences", "HTML5 Canvas", "Browser-based games"] },
+  { title: "IT & infrastructure", icon: "\u2699", skills: ["Hardware troubleshooting", "Network administration", "System deployment", "IT support & security", "Equipment management"] },
 ]
 export const learningTopics = [
-  { title: "Advanced System Design", category: "Architecture" },
-  { title: "Rust for Performance", category: "Systems" },
-  { title: "Generative AI Patterns", category: "AI / ML" },
+  { title: "Unity Multiplayer & Netcode", category: "Game Dev" },
+  { title: "Advanced C# Patterns", category: "Development" },
+  { title: "Cloud & DevOps Pipelines", category: "Infrastructure" },
+  { title: "AR/VR Spatial Computing", category: "Emerging Tech" },
 ]
 
 export function filterProjects(items: Project[], category: ProjectFilter, search: string): Project[] {

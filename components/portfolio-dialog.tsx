@@ -84,7 +84,17 @@ export function PortfolioDialog({ modal, onClose, onAfterClose, onGuideAction }:
                       <span className="pf-category">{modal.project.label}</span>
                       <DialogTitle tabIndex={-1} data-modal-focus>{modal.project.title}</DialogTitle>
                       <DialogDescription>{modal.project.description}</DialogDescription>
-                      <ul className="pf-tags" aria-label="Technologies">{modal.project.tags.map((tag) => <li className="pf-tag" key={tag}>{tag}</li>)}</ul>
+                      <ul className="pf-tags" aria-label="Technologies">
+                        {modal.project.tags.map((tag, i) => (
+                          <motion.li
+                            className="pf-tag"
+                            key={tag}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.2, delay: 0.15 + i * 0.04, ease: "easeOut" as const }}
+                          >{tag}</motion.li>
+                        ))}
+                      </ul>
                       {modal.project.link && (
                         <a className="pf-btn pf-btn-primary" href={modal.project.link} target="_blank" rel="noopener noreferrer">Visit live site ↗<span className="sr-only"> (opens in a new tab)</span></a>
                       )}
