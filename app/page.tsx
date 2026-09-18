@@ -143,7 +143,7 @@ export default function Home() {
       <a className="pf-skip" href="#main" onClick={() => setTourIndex(null)}>Skip to content</a>
       <Navigation onNavigate={navigate} onResume={(trigger) => openModal({ kind: "resume" }, trigger)} />
       <main id="main" tabIndex={-1}>
-        <Hero onNavigate={navigate} onStartTour={startTour} highlighted={target === "hero-copy"} />
+        <Hero onNavigate={navigate} onStartTour={startTour} onSelectProject={(project, trigger) => openModal({ kind: "project", project }, trigger)} highlighted={target === "hero-copy"} />
         <PortfolioIntro />
         <ContentRow items={projectsList} category={category} query={query} onFilter={filter}
           onSelect={(project, trigger) => openModal({ kind: "project", project }, trigger)}

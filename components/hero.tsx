@@ -3,15 +3,17 @@
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowUpRight, ArrowRight } from "lucide-react"
-import { projects, type SectionId } from "@/lib/portfolio-data"
+import { projects, type Project, type SectionId } from "@/lib/portfolio-data"
+import { HeroShowcase } from "@/components/hero-showcase"
 
 interface HeroProps {
   onNavigate: (section: SectionId) => void
   onStartTour: () => void
+  onSelectProject: (project: Project, trigger: HTMLElement) => void
   highlighted: boolean
 }
 
-export function Hero({ onNavigate, onStartTour, highlighted }: HeroProps) {
+export function Hero({ onNavigate, onStartTour, onSelectProject, highlighted }: HeroProps) {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
   useEffect(() => {
@@ -93,15 +95,14 @@ export function Hero({ onNavigate, onStartTour, highlighted }: HeroProps) {
           {projects.length} projects to explore · From registration to augmented reality
         </motion.div>
       </motion.div>
-      <motion.figure
-        className="pf-hero-art"
-        initial={{ opacity: 0, x: 50, rotate: 1 }}
-        animate={{ opacity: 1, x: 0, rotate: 1 }}
+      <motion.div
+        className="pf-hero-art-wrapper"
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, ease: "easeOut", delay: 0.3 }}
       >
-        <img src="/mockups/hero-showcase.png" alt="Dark developer workspace with a laptop displaying the red-accented portfolio design concept" width={1376} height={768} fetchPriority="high" />
-        <figcaption><span>Behind the build</span><span>Portfolio concept / 01</span></figcaption>
-      </motion.figure>
+        <HeroShowcase projects={projects} onSelectProject={onSelectProject} />
+      </motion.div>
     </section>
   )
 }

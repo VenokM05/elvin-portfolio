@@ -77,6 +77,235 @@
 .pf-hero-art figcaption { display: flex; justify-content: space-between; gap: 16px; padding: 16px 5px 5px; font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--pf-muted); }
 .pf-hero-art figcaption span:first-child { color: var(--pf-ink); }
 .pf-hero-art::before { content: ""; position: absolute; top: 34px; bottom: 34px; left: -13px; width: 3px; background: var(--pf-accent); border-radius: 2px; }
+
+/* ─── Hero Showcase (desk scene + stacked cards + carousel) ─── */
+
+.pf-hero-art-wrapper {
+  position: relative;
+  min-height: 340px;
+}
+
+.pf-hero-showcase {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 340px;
+  border-radius: var(--pf-radius);
+  overflow: hidden;
+}
+
+/* Desk scene background */
+.pf-hero-desk {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--pf-radius);
+  overflow: hidden;
+}
+
+.pf-hero-desk-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--pf-radius);
+  filter: brightness(0.55) saturate(0.8);
+  transition: filter 0.4s ease;
+}
+
+.pf-hero-showcase:hover .pf-hero-desk-img {
+  filter: brightness(0.45) saturate(0.7);
+}
+
+/* Interactive hotspots */
+.pf-hero-hotspot {
+  position: absolute;
+  z-index: 5;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pf-hero-hotspot-dot {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--pf-accent);
+  border: 2px solid rgba(255,255,255,0.6);
+  box-shadow: 0 0 0 0 rgba(255,255,255,0.3);
+  animation: pf-hotspot-pulse 2s ease-in-out infinite;
+  transition: transform 0.2s ease;
+}
+
+.pf-hero-hotspot:hover .pf-hero-hotspot-dot,
+.pf-hero-hotspot.active .pf-hero-hotspot-dot {
+  transform: scale(1.3);
+}
+
+.pf-hero-hotspot-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  background: var(--pf-ink);
+  color: var(--pf-page);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.pf-hero-hotspot:hover .pf-hero-hotspot-tooltip,
+.pf-hero-hotspot.active .pf-hero-hotspot-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@keyframes pf-hotspot-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(255,255,255,0); }
+}
+
+/* Stacked cards container */
+.pf-hero-cards {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 20px 40px;
+  min-height: 300px;
+}
+
+/* Each browser-window card */
+.pf-hero-card {
+  position: absolute;
+  width: 75%;
+  max-width: 380px;
+  background: var(--pf-surface);
+  border: 1px solid var(--pf-line);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+.pf-hero-card-top {
+  cursor: pointer;
+}
+
+.pf-hero-card-top:hover {
+  box-shadow: 0 12px 48px rgba(0,0,0,0.4);
+}
+
+/* Browser chrome bar */
+.pf-hero-card-chrome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--pf-card);
+  border-bottom: 1px solid var(--pf-line);
+}
+
+.pf-hero-card-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.pf-hero-card-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pf-border);
+}
+
+.pf-hero-card-dots span:first-child { background: hsl(0 70% 55%); }
+.pf-hero-card-dots span:nth-child(2) { background: hsl(45 70% 55%); }
+.pf-hero-card-dots span:nth-child(3) { background: hsl(120 50% 45%); }
+
+.pf-hero-card-url {
+  font-size: 10px;
+  color: var(--pf-muted);
+  letter-spacing: 0.03em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+/* Card body with screenshot */
+.pf-hero-card-body {
+  position: relative;
+}
+
+.pf-hero-card-img {
+  width: 100%;
+  aspect-ratio: 16/10;
+  object-fit: cover;
+  display: block;
+}
+
+/* Label overlay on top card */
+.pf-hero-card-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 14px 12px;
+  background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pf-hero-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.pf-hero-card-tag {
+  font-size: 10px;
+  color: rgba(255,255,255,0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Carousel indicator dots */
+.pf-hero-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 10;
+}
+
+.pf-hero-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transition: all 0.3s ease;
+}
+
+.pf-hero-dot.active {
+  background: var(--pf-accent);
+  width: 18px;
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-hero-hotspot-dot { animation: none; }
+}
 .pf-intro { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: center; padding: 22px 0; border-block: 1px solid var(--pf-line); }
 .pf-intro p { font-size: 14px; }
 .pf-intro strong { color: var(--pf-ink); font-weight: 550; }
@@ -207,6 +436,9 @@
   .pf-container { width: calc(100% - 56px); }
   .pf-hero { gap: 32px; }
   .pf-hero-art img { aspect-ratio: .9; }
+  .pf-hero-showcase { min-height: 300px; }
+  .pf-hero-cards { min-height: 260px; padding: 20px 16px 36px; }
+  .pf-hero-card { width: 70%; max-width: 340px; }
   .pf-nav { gap: 16px; }
   .pf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pf-about { gap: 32px; }
@@ -227,6 +459,11 @@
   .pf-hero-art { transform: none; }
   .pf-hero-art img { aspect-ratio: 1.75; }
   .pf-hero-art::before { display: none; }
+  .pf-hero-art-wrapper { min-height: 280px; }
+  .pf-hero-showcase { min-height: 280px; }
+  .pf-hero-cards { min-height: 240px; padding: 16px 12px 32px; }
+  .pf-hero-card { width: 80%; max-width: 320px; }
+  .pf-hero-desk-img { filter: brightness(0.5) saturate(0.7); }
   .pf-hero h1 { font-size: clamp(42px, 8.8vw, 64px); }
   .pf-section { padding-top: 64px; }
   .pf-heading { align-items: start; flex-direction: column; gap: 16px; }
@@ -247,6 +484,13 @@
   .pf-hero-actions .pf-btn { flex: 1; }
   .pf-hero-note { font-size: 11px; }
   .pf-hero-art figcaption { font-size: 9px; letter-spacing: .08em; }
+  .pf-hero-showcase { min-height: 240px; }
+  .pf-hero-cards { min-height: 200px; padding: 12px 8px 28px; }
+  .pf-hero-card { width: 85%; max-width: 280px; }
+  .pf-hero-card-chrome { padding: 6px 10px; }
+  .pf-hero-card-url { font-size: 9px; }
+  .pf-hero-card-title { font-size: 12px; }
+  .pf-hero-hotspot-tooltip { font-size: 10px; padding: 4px 8px; }
   .pf-learning-list li { flex-direction: column; gap: 2px; }
   .pf-contact { padding: 24px; }
 }
