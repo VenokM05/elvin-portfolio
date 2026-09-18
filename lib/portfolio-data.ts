@@ -1,5 +1,5 @@
 export type ProjectCategory = "web" | "systems" | "mobile" | "games"
-export type ProjectFilter = ProjectCategory | "all"
+export type ProjectFilter = ProjectCategory | "all" | "demo"
 export type SectionId = "home" | "projects" | "about" | "skills" | "upcoming" | "contact"
 
 export interface Project {
@@ -113,7 +113,8 @@ export const projects: Project[] = [
 ]
 
 export const projectFilters: { value: ProjectFilter; label: string }[] = [
-  { value: "all", label: "All work" }, { value: "web", label: "Web apps" },
+  { value: "all", label: "All work" }, { value: "demo", label: "Live Demo" },
+  { value: "web", label: "Web apps" },
   { value: "systems", label: "Systems" }, { value: "mobile", label: "Mobile" },
   { value: "games", label: "Games & AR" },
 ]
@@ -148,7 +149,12 @@ export const careerTimeline: TimelineEntry[] = [
 
 export function filterProjects(items: Project[], category: ProjectFilter, search: string): Project[] {
   const query = search.trim().toLowerCase()
-  return items.filter((project) => (category === "all" || project.category === category) &&
+  const matchesCategory = category === "all"
+    ? () => true
+    : category === "demo"
+      ? (p: Project) => p.link !== ""
+      : (p: Project) => p.category === category
+  return items.filter((project) => matchesCategory(project) &&
     [project.title, project.label, project.description, ...project.tags].join(" ").toLowerCase().includes(query))
 }
 

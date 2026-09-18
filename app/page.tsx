@@ -51,7 +51,7 @@ export default function Home() {
     const params = new URLSearchParams(window.location.search)
     const cat = params.get("category") as ProjectFilter | null
     const q = params.get("q") ?? ""
-    if (cat && ["all", "web", "systems", "mobile", "games"].includes(cat)) {
+    if (cat && ["all", "demo", "web", "systems", "mobile", "games"].includes(cat)) {
       setCategory(cat)
       setQuery(q)
     }
