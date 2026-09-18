@@ -1,8 +1,29 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useEffect, useState, useRef } from "react"
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { X, ArrowRight, Sparkles } from "lucide-react"
+
+function AnimatedCounter({ target, suffix = "", duration = 1200 }: { target: number; suffix?: string; duration?: number }) {
+  const [count, setCount] = useState(0)
+  const prefersReducedMotion = useReducedMotion()
+  const frameRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    if (prefersReducedMotion) { setCount(target); return }
+    const start = performance.now()
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setCount(Math.round(eased * target))
+      if (progress < 1) frameRef.current = requestAnimationFrame(step)
+    }
+    frameRef.current = requestAnimationFrame(step)
+    return () => { if (frameRef.current) cancelAnimationFrame(frameRef.current) }
+  }, [target, duration, prefersReducedMotion])
+
+  return <>{count}{suffix}</>
+}
 
 interface WelcomeModalProps {
   onStartTour: () => void
@@ -106,15 +127,15 @@ export function WelcomeModal({ onStartTour }: WelcomeModalProps) {
 
             <div className="pf-welcome-stats">
               <div className="pf-welcome-stat">
-                <span className="pf-welcome-stat-value">10+</span>
+                <span className="pf-welcome-stat-value"><AnimatedCounter target={10} suffix="+" /></span>
                 <span className="pf-welcome-stat-label">Years building</span>
               </div>
               <div className="pf-welcome-stat">
-                <span className="pf-welcome-stat-value">10</span>
+                <span className="pf-welcome-stat-value"><AnimatedCounter target={10} /></span>
                 <span className="pf-welcome-stat-label">Projects shipped</span>
               </div>
               <div className="pf-welcome-stat">
-                <span className="pf-welcome-stat-value">4</span>
+                <span className="pf-welcome-stat-value"><AnimatedCounter target={4} /></span>
                 <span className="pf-welcome-stat-label">Skill domains</span>
               </div>
             </div>

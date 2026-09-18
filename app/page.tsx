@@ -11,6 +11,7 @@ import { PortfolioDialog, type PortfolioModal } from "@/components/portfolio-dia
 import { PortfolioTour } from "@/components/portfolio-tour"
 import { WelcomeModal } from "@/components/welcome-modal"
 import { ScrollToTop } from "@/components/scroll-to-top"
+import { KeyboardShortcuts } from "@/components/keyboard-shortcuts"
 import { ScreenshotViewer } from "@/components/screenshot-viewer"
 import { projects, type Project, type ProjectFilter, type SectionId } from "@/lib/portfolio-data"
 import { tourSteps, type GuideAction } from "@/lib/portfolio-guide"
@@ -35,13 +36,23 @@ export default function Home() {
       try {
         const parsed = JSON.parse(stored) as Project[]
         setProjectsList((prev) => {
-          // Only update if data actually changed (compare by JSON to avoid unnecessary re-renders)
           if (JSON.stringify(prev) !== JSON.stringify(parsed)) return parsed
           return prev
         })
       } catch (e) {
         console.error("Failed to parse stored projects:", e)
       }
+    }
+  }, [])
+
+  // URL-based deep links: read ?category= from URL on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const cat = params.get("category") as ProjectFilter | null
+    const q = params.get("q") ?? ""
+    if (cat && ["all", "web", "systems", "mobile", "games"].includes(cat)) {
+      setCategory(cat)
+      setQuery(q)
     }
   }, [])
 
@@ -150,6 +161,7 @@ export default function Home() {
       {tourIndex !== null && <PortfolioTour index={tourIndex} onChange={setTourIndex} onEnd={endTour} />}
       <WelcomeModal onStartTour={startTour} />
       <ScrollToTop />
+      <KeyboardShortcuts onStartTour={startTour} onNavigate={(section) => navigate(section as SectionId)} />
     </div>
   )
 }

@@ -116,6 +116,22 @@ export const learningTopics = [
   { title: "AR/VR Spatial Computing", category: "Emerging Tech" },
 ]
 
+export interface TimelineEntry {
+  year: string
+  title: string
+  description: string
+  icon: string
+}
+
+export const careerTimeline: TimelineEntry[] = [
+  { year: "2014", title: "Started Freelancing", description: "Took on small web projects, building the foundation in HTML, CSS, and JavaScript.", icon: "\u{1F680}" },
+  { year: "2016", title: "Went Professional", description: "Transitioned to full-time software development, delivering enterprise web applications.", icon: "\u{1F4BC}" },
+  { year: "2018", title: "IT Specialist Role", description: "Expanded into hardware, networking, and infrastructure management alongside software.", icon: "\u{1F5A5}\uFE0F" },
+  { year: "2020", title: "Game Development", description: "Built interactive games and AR experiences for major brands using JavaScript and Unity.", icon: "\u{1F3AE}" },
+  { year: "2023", title: "Full-Stack & Systems", description: "Delivered registration platforms, inventory systems, and digital passports at scale.", icon: "\u{1F310}" },
+  { year: "Now", title: "Building the Future", description: "Exploring Unity multiplayer, AR/VR spatial computing, and cloud-native architectures.", icon: "\u2728" },
+]
+
 export function filterProjects(items: Project[], category: ProjectFilter, search: string): Project[] {
   const query = search.trim().toLowerCase()
   return items.filter((project) => (category === "all" || project.category === category) &&

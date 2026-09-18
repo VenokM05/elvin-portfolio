@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import { learningTopics, profile, skillGroups, type SectionId } from "@/lib/portfolio-data"
+import { CareerTimeline } from "@/components/career-timeline"
 
 function AnimatedEyebrow({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -117,6 +118,19 @@ export function PortfolioSections({ target, onNavigate, onContact }: PortfolioSe
             ))}
           </div>
         </motion.div>
+      </section>
+      <section className="pf-container pf-section" id="timeline" aria-labelledby="timeline-title">
+        <motion.div
+          className="pf-heading"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={transition}
+        >
+          <div><AnimatedEyebrow>The journey so far</AnimatedEyebrow><h2 id="timeline-title" tabIndex={-1}>Career timeline</h2></div>
+          <p>From freelancing on small projects to building enterprise systems and interactive experiences.</p>
+        </motion.div>
+        <CareerTimeline />
       </section>
       <section className="pf-container pf-section" id="upcoming" aria-labelledby="upcoming-title">
         <motion.div
