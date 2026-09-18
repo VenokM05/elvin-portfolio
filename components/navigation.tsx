@@ -1,7 +1,9 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Menu, X } from "lucide-react"
+import { motion } from "framer-motion"
+import { Menu, X, Sun, Moon } from "lucide-react"
+import { useTheme } from "next-themes"
 import { profile, type SectionId } from "@/lib/portfolio-data"
 
 const links: { section: SectionId; label: string }[] = [
@@ -19,16 +21,24 @@ interface NavigationProps {
 export function Navigation({ onNavigate, onResume }: NavigationProps) {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState<SectionId | null>(null)
+  const [scrollProgress, setScrollProgress] = useState(0)
   const header = useRef<HTMLElement>(null)
   const toggle = useRef<HTMLButtonElement>(null)
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     const update = () => {
       const current = links.filter(({ section }) => {
         const element = document.getElementById(section)
         return element && element.getBoundingClientRect().top <= 160
       }).at(-1)
       setActive(current?.section ?? null)
+
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight
+      const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0
+      setScrollProgress(progress)
     }
     update()
     window.addEventListener("scroll", update, { passive: true })
@@ -83,11 +93,26 @@ export function Navigation({ onNavigate, onResume }: NavigationProps) {
             if (toggle.current) onResume(toggle.current)
           }}>Resume & profile</button>
         </nav>
+        {mounted && (
+          <button
+            type="button"
+            className="pf-btn pf-btn-quiet"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          >
+            {theme === "dark" ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}
+          </button>
+        )}
         <button type="button" className="pf-btn pf-btn-quiet pf-header-cta" onClick={(event) => onResume(event.currentTarget)}>Resume ↗</button>
         <button ref={toggle} type="button" className="pf-btn pf-btn-quiet pf-menu-toggle" aria-controls="navigation" aria-expanded={open} onClick={() => setOpen(!open)}>
           {open ? "Close" : "Menu"}{open ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
         </button>
       </div>
+      <motion.div
+        className="pf-scroll-progress"
+        style={{ scaleX: scrollProgress / 100 }}
+        initial={false}
+      />
     </header>
   )
 }

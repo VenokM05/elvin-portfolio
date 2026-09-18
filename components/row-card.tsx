@@ -1,19 +1,35 @@
 "use client"
 
+import { motion } from "framer-motion"
 import { ArrowUpRight } from "lucide-react"
 import type { Project } from "@/lib/portfolio-data"
+import { ScreenshotButton } from "./screenshot-viewer"
 
 interface RowCardProps {
   project: Project
   index: number
   onSelect: (project: Project, trigger: HTMLElement) => void
+  onViewScreenshot: (project: Project) => void
 }
 
-export function RowCard({ project, index, onSelect }: RowCardProps) {
+export function RowCard({ project, index, onSelect, onViewScreenshot }: RowCardProps) {
   return (
-    <article className="pf-card" aria-labelledby={`project-${project.id}`}>
+    <motion.article
+      className="pf-card"
+      aria-labelledby={`project-${project.id}`}
+      whileHover={{ y: -4, boxShadow: "0 12px 40px rgba(0,0,0,0.3)" }}
+      transition={{ duration: 0.2 }}
+    >
       <div className="pf-preview">
-        <img src={project.image} alt={`${project.title} preview`} width={720} height={390} loading="lazy" />
+        <motion.img
+          src={project.image}
+          alt={`${project.title} preview`}
+          width={720}
+          height={390}
+          loading="lazy"
+          whileHover={{ scale: 1.03 }}
+          transition={{ duration: 0.3 }}
+        />
         <span className="pf-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
       </div>
       <div className="pf-card-body">
@@ -26,11 +42,12 @@ export function RowCard({ project, index, onSelect }: RowCardProps) {
         </ul>
         <div className="pf-card-actions">
           <button type="button" onClick={(event) => onSelect(project, event.currentTarget)} aria-label={`Explore ${project.title}`} aria-haspopup="dialog">Explore project →</button>
+          <ScreenshotButton project={project} onViewScreenshot={onViewScreenshot} />
           <a className="pf-link" href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} (opens in a new tab)`}>
             Live site <ArrowUpRight size={16} aria-hidden="true" />
           </a>
         </div>
       </div>
-    </article>
+    </motion.article>
   )
 }

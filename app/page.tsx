@@ -9,7 +9,8 @@ import { Footer } from "@/components/footer"
 import { PortfolioIntro, PortfolioSections } from "@/components/portfolio-sections"
 import { PortfolioDialog, type PortfolioModal } from "@/components/portfolio-dialog"
 import { PortfolioTour } from "@/components/portfolio-tour"
-import { projects, type ProjectFilter, type SectionId } from "@/lib/portfolio-data"
+import { ScreenshotViewer } from "@/components/screenshot-viewer"
+import { projects, type Project, type ProjectFilter, type SectionId } from "@/lib/portfolio-data"
 import { tourSteps, type GuideAction } from "@/lib/portfolio-guide"
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
   const [query, setQuery] = useState("")
   const [modal, setModal] = useState<PortfolioModal | null>(null)
   const [tourIndex, setTourIndex] = useState<number | null>(null)
+  const [screenshotProject, setScreenshotProject] = useState<Project | null>(null)
   const launcher = useRef<HTMLButtonElement>(null)
   const opener = useRef<HTMLElement | null>(null)
   const afterCloseAction = useRef<(() => void) | null>(null)
@@ -42,6 +44,8 @@ export default function Home() {
   }, [])
   const startTour = () => { filter("all", ""); setTourIndex(0) }
   const endTour = useCallback(() => { restoreTourFocus.current = true; setTourIndex(null) }, [])
+  const viewScreenshot = (project: Project) => setScreenshotProject(project)
+  const closeScreenshot = () => setScreenshotProject(null)
 
   const openModal = (next: PortfolioModal, trigger: HTMLElement) => {
     setTourIndex(null)
@@ -84,7 +88,8 @@ export default function Home() {
         <Hero onNavigate={navigate} onStartTour={startTour} highlighted={target === "hero-copy"} />
         <PortfolioIntro />
         <ContentRow items={projects} category={category} query={query} onFilter={filter}
-          onSelect={(project, trigger) => openModal({ kind: "project", project }, trigger)} highlighted={target === "projects-heading"} />
+          onSelect={(project, trigger) => openModal({ kind: "project", project }, trigger)}
+          onViewScreenshot={viewScreenshot} highlighted={target === "projects-heading"} />
         <PortfolioSections target={target} onNavigate={navigate} onContact={(trigger) => openModal({ kind: "contact" }, trigger)} />
       </main>
       <Footer onNavigate={navigate} />
@@ -95,6 +100,7 @@ export default function Home() {
         </button>
       )}
       <PortfolioDialog modal={modal} onClose={closeModal} onAfterClose={afterClose} onGuideAction={guideAction} />
+      <ScreenshotViewer project={screenshotProject} onClose={closeScreenshot} />
       {tourIndex !== null && <PortfolioTour index={tourIndex} onChange={setTourIndex} onEnd={endTour} />}
     </div>
   )
