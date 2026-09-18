@@ -43,9 +43,11 @@ export function RowCard({ project, index, onSelect, onViewScreenshot }: RowCardP
         <div className="pf-card-actions">
           <button type="button" onClick={(event) => onSelect(project, event.currentTarget)} aria-label={`Explore ${project.title}`} aria-haspopup="dialog">Explore project →</button>
           <ScreenshotButton project={project} onViewScreenshot={onViewScreenshot} />
-          <a className="pf-link" href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} (opens in a new tab)`}>
-            Live site <ArrowUpRight size={16} aria-hidden="true" />
-          </a>
+          {project.link && (
+            <a className="pf-link" href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} (opens in a new tab)`}>
+              Live site <ArrowUpRight size={16} aria-hidden="true" />
+            </a>
+          )}
         </div>
       </div>
     </motion.article>

@@ -19,12 +19,56 @@ export default function Home() {
   const [modal, setModal] = useState<PortfolioModal | null>(null)
   const [tourIndex, setTourIndex] = useState<number | null>(null)
   const [screenshotProject, setScreenshotProject] = useState<Project | null>(null)
+  const [projectsList, setProjectsList] = useState<Project[]>(projects)
   const launcher = useRef<HTMLButtonElement>(null)
   const opener = useRef<HTMLElement | null>(null)
   const afterCloseAction = useRef<(() => void) | null>(null)
   const dialogOpen = useRef(false)
   const restoreTourFocus = useRef(false)
   const target = tourIndex === null ? undefined : tourSteps[tourIndex].target
+
+  const loadProjectsFromStorage = useCallback(() => {
+    const stored = localStorage.getItem("portfolio_projects")
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as Project[]
+        setProjectsList((prev) => {
+          // Only update if data actually changed (compare by JSON to avoid unnecessary re-renders)
+          if (JSON.stringify(prev) !== JSON.stringify(parsed)) return parsed
+          return prev
+        })
+      } catch (e) {
+        console.error("Failed to parse stored projects:", e)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    // Load on mount
+    loadProjectsFromStorage()
+
+    // Re-sync when page becomes visible (navigating back from /admin)
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") loadProjectsFromStorage()
+    }
+    document.addEventListener("visibilitychange", onVisibilityChange)
+
+    // Re-sync on pageshow (back/forward navigation)
+    const onPageShow = () => loadProjectsFromStorage()
+    window.addEventListener("pageshow", onPageShow)
+
+    // Sync across tabs when admin edits in another tab
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "portfolio_projects") loadProjectsFromStorage()
+    }
+    window.addEventListener("storage", onStorage)
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibilityChange)
+      window.removeEventListener("pageshow", onPageShow)
+      window.removeEventListener("storage", onStorage)
+    }
+  }, [loadProjectsFromStorage])
 
   useEffect(() => {
     if (tourIndex === null && restoreTourFocus.current) {
@@ -68,7 +112,7 @@ export default function Home() {
   }, [])
   const guideAction = (action: GuideAction) => {
     if (action.kind === "project") {
-      const project = projects.find((item) => item.id === action.projectId)
+      const project = projectsList.find((item) => item.id === action.projectId)
       if (project) setModal({ kind: "project", project })
     } else if (action.kind === "resume") setModal({ kind: "resume" })
     else {
@@ -87,7 +131,7 @@ export default function Home() {
       <main id="main" tabIndex={-1}>
         <Hero onNavigate={navigate} onStartTour={startTour} highlighted={target === "hero-copy"} />
         <PortfolioIntro />
-        <ContentRow items={projects} category={category} query={query} onFilter={filter}
+        <ContentRow items={projectsList} category={category} query={query} onFilter={filter}
           onSelect={(project, trigger) => openModal({ kind: "project", project }, trigger)}
           onViewScreenshot={viewScreenshot} highlighted={target === "projects-heading"} />
         <PortfolioSections target={target} onNavigate={navigate} onContact={(trigger) => openModal({ kind: "contact" }, trigger)} />

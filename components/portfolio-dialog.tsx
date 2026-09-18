@@ -73,13 +73,21 @@ export function PortfolioDialog({ modal, onClose, onAfterClose, onGuideAction }:
                 {modal.kind === "contact" && <ContactModal />}
                 {modal.kind === "project" && (
                   <>
-                    <img className="pf-dialog-image" src={modal.project.image} alt={`${modal.project.title} preview`} width={720} height={360} />
+                    <img
+                      className="pf-dialog-image"
+                      src={modal.project.banner || modal.project.image}
+                      alt={`${modal.project.title} banner`}
+                      width={720}
+                      height={360}
+                    />
                     <div className="pf-dialog-body">
                       <span className="pf-category">{modal.project.label}</span>
                       <DialogTitle tabIndex={-1} data-modal-focus>{modal.project.title}</DialogTitle>
                       <DialogDescription>{modal.project.description}</DialogDescription>
                       <ul className="pf-tags" aria-label="Technologies">{modal.project.tags.map((tag) => <li className="pf-tag" key={tag}>{tag}</li>)}</ul>
-                      <a className="pf-btn pf-btn-primary" href={modal.project.link} target="_blank" rel="noopener noreferrer">Visit live site ↗<span className="sr-only"> (opens in a new tab)</span></a>
+                      {modal.project.link && (
+                        <a className="pf-btn pf-btn-primary" href={modal.project.link} target="_blank" rel="noopener noreferrer">Visit live site ↗<span className="sr-only"> (opens in a new tab)</span></a>
+                      )}
                       <small>External site. Some projects may require an account or be available only during an event.</small>
                     </div>
                   </>

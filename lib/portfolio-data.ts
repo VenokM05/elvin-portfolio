@@ -8,6 +8,8 @@ export interface Project {
   category: ProjectCategory
   label: string
   image: string
+  banner?: string
+  screenshots?: string[]
   description: string
   tags: string[]
   link: string
