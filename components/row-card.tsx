@@ -42,7 +42,7 @@ export function RowCard({
 
   const handleDemoClick = () => {
     if (link) {
-      window.open(link, '_blank')
+      window.open(link, '_blank', 'noopener,noreferrer')
     }
   }
 

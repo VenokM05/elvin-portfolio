@@ -2,6 +2,10 @@ import { Button } from "@/components/ui/button"
 import { Play, Info } from "lucide-react"
 
 export function Hero() {
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+  }
+
   return (
     <section className="relative w-full h-[80vh] md:h-screen flex items-center overflow-hidden" aria-label="Hero section">
       {/* Background Image / Overlay */}
@@ -30,10 +34,11 @@ export function Hero() {
           </p>
 
           <div className="flex flex-wrap gap-4">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="bg-white text-black hover:bg-white/90 font-bold px-8"
               aria-label="View projects"
+              onClick={() => scrollToSection("projects")}
             >
               <Play className="mr-2 h-5 w-5 fill-current" /> View Projects
             </Button>
@@ -42,6 +47,7 @@ export function Hero() {
               variant="secondary"
               className="bg-muted/50 hover:bg-muted font-bold px-8 backdrop-blur-md"
               aria-label="Learn more about me"
+              onClick={() => scrollToSection("about")}
             >
               <Info className="mr-2 h-5 w-5" /> More Info
             </Button>

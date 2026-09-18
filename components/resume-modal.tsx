@@ -10,6 +10,16 @@ interface ResumeModalProps {
 }
 
 export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
+  const handleDownload = () => {
+    const link = document.createElement("a")
+    link.href = "/resume.pdf"
+    link.download = "Elvin_Manuel_Resume.pdf"
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    onClose()
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] bg-background border-border">
@@ -44,6 +54,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               variant="outline"
               size="sm"
               className="font-bold border-primary text-primary hover:bg-primary/10 bg-transparent"
+              onClick={handleDownload}
             >
               Download
             </Button>
