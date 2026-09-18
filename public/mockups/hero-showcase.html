@@ -1,97 +1,590 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0e0f11">
-  <meta name="description" content="Explore Elvin Manuel's web apps, interactive experiences, and development skills. An accessible portfolio concept with a built-in visitor guide.">
-  <title>Elvin Manuel — Developer & Creative Builder</title>
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="hero-showcase.css">
-  <script src="hero-showcase-projects.js" defer></script>
-  <script src="hero-showcase.js" defer></script>
-  <script src="hero-showcase-guide.js" defer></script>
-</head>
-<body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="#home" aria-label="Elvin Manuel, back to top"><span class="brand-mark" aria-hidden="true">E</span><span>Elvin Manuel<small>Developer & creative builder</small></span></a>
-      <nav id="navigation" class="nav-links" aria-label="Main navigation">
-        <a href="#projects" aria-current="location">Selected work</a><a href="#about">About & skills</a><a href="#upcoming">What's next</a><a href="#contact">Contact</a>
-      </nav>
-      <a class="btn btn-quiet header-cta" href="mailto:elvinlazmanuel@gmail.com">Let's talk <span aria-hidden="true">↗</span></a>
-      <button class="btn btn-quiet menu-toggle" type="button" aria-controls="navigation" aria-expanded="false">Menu <span aria-hidden="true">☰</span></button>
-    </div>
-  </header>
-  <main id="main" tabindex="-1">
-    <section class="container hero" id="home" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <div class="eyebrow">Code meets creativity</div>
-        <h1 id="hero-title">Designing<br>experiences.<br>Building <span>futures.</span></h1>
-        <p>Hi, I'm Elvin. A full-stack developer turning ideas into thoughtful websites, useful applications, and interactive experiences.</p>
-        <div class="hero-actions"><a class="btn btn-primary" href="#projects">Explore my work <span aria-hidden="true">↗</span></a><button type="button" class="btn btn-quiet" data-start-tour hidden>Take a quick tour <span aria-hidden="true">→</span></button></div>
-        <div class="hero-note">10 projects to explore · From registration to augmented reality</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0e0f11" />
+    <meta
+      name="description"
+      content="Explore Elvin Manuel's web apps, interactive experiences, and development skills. An accessible portfolio concept with a built-in visitor guide."
+    />
+    <title>Elvin Manuel — Developer & Creative Builder</title>
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="hero-showcase.css" />
+    <script src="hero-showcase-projects.js" defer></script>
+    <script src="hero-showcase.js" defer></script>
+    <script src="hero-showcase-guide.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#home" aria-label="Elvin Manuel, back to top"
+          ><span class="brand-mark" aria-hidden="true">E</span
+          ><span
+            >Elvin Manuel<small>Developer & creative builder</small></span
+          ></a
+        >
+        <nav id="navigation" class="nav-links" aria-label="Main navigation">
+          <a href="#projects" aria-current="location">Selected work</a
+          ><a href="#about">About & skills</a><a href="#upcoming">What's next</a
+          ><a href="#contact">Contact</a>
+        </nav>
+        <a
+          class="btn btn-quiet header-cta"
+          href="mailto:elvinlazmanuel@gmail.com"
+          >Let's talk <span aria-hidden="true">↗</span></a
+        >
+        <button
+          class="btn btn-quiet menu-toggle"
+          type="button"
+          aria-controls="navigation"
+          aria-expanded="false"
+        >
+          Menu <span aria-hidden="true">☰</span>
+        </button>
       </div>
-      <figure class="hero-art">
-        <img src="hero-showcase.png" alt="Dark developer workspace with a laptop displaying the original red-accented portfolio design concept" width="1376" height="768" fetchpriority="high">
-        <figcaption><span>Behind the build</span><span>Portfolio concept / 01</span></figcaption>
-      </figure>
-    </section>
-    <div class="container intro-strip">
-      <p><strong>Thoughtful interfaces. Practical solutions.</strong><br>Web development, UI/UX, and interactive experiences.</p>
-      <div class="strip-links"><a class="text-link" href="https://github.com/VenokM05/" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)">GitHub ↗</a><a class="text-link" href="https://www.linkedin.com/in/elvin-manuel-181940147/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)">LinkedIn ↗</a></div>
-    </div>
-    <section class="container section" id="projects" aria-labelledby="projects-title">
-      <div class="section-heading"><div><div class="eyebrow">A collection of things I've built</div><div class="section-title-line"><h2 id="projects-title">Selected work</h2><span class="count-badge">10 projects</span></div></div><p>Real projects, different challenges. Browse by type, explore the details, or visit a live site.</p></div>
-      <div class="project-tools" id="project-tools" hidden>
-        <div class="filters" role="group" aria-label="Filter projects by type">
-          <button type="button" class="filter" data-filter="all" aria-pressed="true">All work</button><button type="button" class="filter" data-filter="web" aria-pressed="false">Web apps</button><button type="button" class="filter" data-filter="systems" aria-pressed="false">Systems</button><button type="button" class="filter" data-filter="mobile" aria-pressed="false">Mobile</button><button type="button" class="filter" data-filter="games" aria-pressed="false">Games & AR</button>
+    </header>
+    <main id="main" tabindex="-1">
+      <section class="container hero" id="home" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow">Code meets creativity</div>
+          <h1 id="hero-title">
+            Designing<br />experiences.<br />Building <span>futures.</span>
+          </h1>
+          <p>
+            Hi, I'm Elvin. A full-stack developer turning ideas into thoughtful
+            websites, useful applications, and interactive experiences.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#projects"
+              >Explore my work <span aria-hidden="true">↗</span></a
+            ><button type="button" class="btn btn-quiet" data-start-tour hidden>
+              Take a quick tour <span aria-hidden="true">→</span>
+            </button>
+          </div>
+          <div class="hero-note">
+            10 projects to explore · From registration to augmented reality
+          </div>
         </div>
-        <label class="search"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6"/></svg><span class="sr-only">Search projects or technologies</span><input id="project-search" type="search" placeholder="Search projects or tech…" autocomplete="off"></label>
+        <figure class="hero-art">
+          <img
+            src="hero-showcase.png"
+            alt="Dark developer workspace with a laptop displaying the original red-accented portfolio design concept"
+            width="1376"
+            height="768"
+            fetchpriority="high"
+          />
+          <figcaption>
+            <span>Behind the build</span><span>Portfolio concept / 01</span>
+          </figcaption>
+        </figure>
+      </section>
+      <div class="container intro-strip">
+        <p>
+          <strong>Thoughtful interfaces. Practical solutions.</strong><br />Web
+          development, UI/UX, and interactive experiences.
+        </p>
+        <div class="strip-links">
+          <a
+            class="text-link"
+            href="https://github.com/VenokM05/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub (opens in a new tab)"
+            >GitHub ↗</a
+          ><a
+            class="text-link"
+            href="https://www.linkedin.com/in/elvin-manuel-181940147/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn (opens in a new tab)"
+            >LinkedIn ↗</a
+          >
+        </div>
       </div>
-      <p class="result-count" id="result-count" role="status" aria-atomic="true"></p>
-      <div class="project-grid" id="project-grid"></div>
-      <div class="empty-state" id="empty-state" hidden><h3>No projects found</h3><p>Try another name, technology, or category.</p><button class="btn" id="reset-search" type="button">Reset filters</button></div>
-      <noscript><div class="notice"><p>Enable JavaScript for project previews, filtering, and the portfolio guide. You can still explore all projects here:</p><ul>
-        <li><a class="text-link" href="https://papp-registration.com/landing/">PAPP Registration ↗</a></li><li><a class="text-link" href="https://qrcode.virtual-registration.com/">QR Code Generator ↗</a></li><li><a class="text-link" href="https://inventory.wildfirexstream.com/login.php">Equipment Inventory ↗</a></li><li><a class="text-link" href="https://ultramega.virtual-registration.com/">Ultra Mega Registration ↗</a></li><li><a class="text-link" href="https://40taonpalawan.com/login.php">Palawan Digital Passport ↗</a></li><li><a class="text-link" href="https://virtual-registration.com/startup/viatris-vr/">Viatris Virtual Registration ↗</a></li><li><a class="text-link" href="https://virtual-registration.com/startup/grab-game/">Grab Game ↗</a></li><li><a class="text-link" href="https://virtual-registration.com/startup/mcdo-game/">McDonald's Game ↗</a></li><li><a class="text-link" href="https://virtual-registration.com/startup/ar-hunt/">AR Hunt ↗</a></li><li><a class="text-link" href="https://virtual-registration.com/startup/rcbc/wall.php">RCBC Commitment Wall ↗</a></li>
-      </ul></div></noscript>
-    </section>
-    <section class="container section" id="about" aria-labelledby="about-title">
-      <div class="about-grid">
-        <div class="about-copy"><div class="eyebrow">The person behind the pixels</div><h2 id="about-title">Curious by nature.<br>Builder by choice.</h2><p>I'm Elvin Manuel, a software engineer who enjoys connecting design and development. I build web applications with a focus on clear interfaces and maintainable code.</p><p>From event registration to interactive games, I like making complex ideas feel simple to use.</p><a class="text-link" href="https://www.linkedin.com/in/elvin-manuel-181940147/" target="_blank" rel="noopener noreferrer" aria-label="View Elvin's professional profile on LinkedIn (opens in a new tab)">More about my background ↗</a></div>
-        <div class="skill-columns"><article class="skill-group"><span class="skill-icon" aria-hidden="true">&lt;/&gt;</span><h3>Frontend & design</h3><ul><li>React & Next.js</li><li>TypeScript</li><li>Tailwind CSS</li><li>UI/UX design</li><li>Responsive interfaces</li></ul></article><article class="skill-group"><span class="skill-icon" aria-hidden="true">{ }</span><h3>Backend & systems</h3><ul><li>PHP & Node.js</li><li>MySQL & PostgreSQL</li><li>REST APIs</li><li>Docker</li><li>Application workflows</li></ul></article></div>
+      <section
+        class="container section"
+        id="projects"
+        aria-labelledby="projects-title"
+      >
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">A collection of things I've built</div>
+            <div class="section-title-line">
+              <h2 id="projects-title">Selected work</h2>
+              <span class="count-badge">10 projects</span>
+            </div>
+          </div>
+          <p>
+            Real projects, different challenges. Browse by type, explore the
+            details, or visit a live site.
+          </p>
+        </div>
+        <div class="project-tools" id="project-tools" hidden>
+          <div
+            class="filters"
+            role="group"
+            aria-label="Filter projects by type"
+          >
+            <button
+              type="button"
+              class="filter"
+              data-filter="all"
+              aria-pressed="true"
+            >
+              All work</button
+            ><button
+              type="button"
+              class="filter"
+              data-filter="web"
+              aria-pressed="false"
+            >
+              Web apps</button
+            ><button
+              type="button"
+              class="filter"
+              data-filter="systems"
+              aria-pressed="false"
+            >
+              Systems</button
+            ><button
+              type="button"
+              class="filter"
+              data-filter="mobile"
+              aria-pressed="false"
+            >
+              Mobile</button
+            ><button
+              type="button"
+              class="filter"
+              data-filter="games"
+              aria-pressed="false"
+            >
+              Games & AR
+            </button>
+          </div>
+          <label class="search"
+            ><svg
+              width="17"
+              height="17"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"
+            >
+              <circle cx="10" cy="10" r="6.5" />
+              <path d="m15 15 6 6" /></svg
+            ><span class="sr-only">Search projects or technologies</span
+            ><input
+              id="project-search"
+              type="search"
+              placeholder="Search projects or tech…"
+              autocomplete="off"
+          /></label>
+        </div>
+        <p
+          class="result-count"
+          id="result-count"
+          role="status"
+          aria-atomic="true"
+        ></p>
+        <div class="project-grid" id="project-grid"></div>
+        <div class="empty-state" id="empty-state" hidden>
+          <h3>No projects found</h3>
+          <p>Try another name, technology, or category.</p>
+          <button class="btn" id="reset-search" type="button">
+            Reset filters
+          </button>
+        </div>
+        <noscript
+          ><div class="notice">
+            <p>
+              Enable JavaScript for project previews, filtering, and the
+              portfolio guide. You can still explore all projects here:
+            </p>
+            <ul>
+              <li>
+                <a
+                  class="text-link"
+                  href="https://papp-registration.com/landing/"
+                  >PAPP Registration ↗</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-link"
+                  href="https://qrcode.virtual-registration.com/"
+                  >QR Code Generator ↗</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-link"
+                  href="https://inventory.wildfirexstream.com/login.php"
+                  >Equipment Inventory ↗</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-link"
+                  href="https://ultramega.virtual-registration.com/"
+                  >Ultra Mega Registration ↗</a
+                >
+              </li>
+              <li>
+                <a class="text-link" href="https://40taonpalawan.com/login.php"
+                  >Palawan Digital Passport ↗</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-link"
+                  href="https://virtual-registration.com/startup/viatris-vr/"
+                  >Viatris Virtual Registration ↗</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-link"
+                  href="https://virtual-registration.com/startup/grab-game/"
+                  >Grab Game ↗</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-link"
+                  href="https://virtual-registration.com/startup/mcdo-game/"
+                  >McDonald's Game ↗</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-link"
+                  href="https://virtual-registration.com/startup/ar-hunt/"
+                  >AR Hunt ↗</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-link"
+                  href="https://virtual-registration.com/startup/rcbc/wall.php"
+                  >RCBC Commitment Wall ↗</a
+                >
+              </li>
+            </ul>
+          </div></noscript
+        >
+      </section>
+      <section
+        class="container section"
+        id="about"
+        aria-labelledby="about-title"
+      >
+        <div class="about-grid">
+          <div class="about-copy">
+            <div class="eyebrow">The person behind the pixels</div>
+            <h2 id="about-title">Curious by nature.<br />Builder by choice.</h2>
+            <p>
+              I'm Elvin Manuel, a software engineer who enjoys connecting design
+              and development. I build web applications with a focus on clear
+              interfaces and maintainable code.
+            </p>
+            <p>
+              From event registration to interactive games, I like making
+              complex ideas feel simple to use.
+            </p>
+            <a
+              class="text-link"
+              href="https://www.linkedin.com/in/elvin-manuel-181940147/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View Elvin's professional profile on LinkedIn (opens in a new tab)"
+              >More about my background ↗</a
+            >
+          </div>
+          <div class="skill-columns">
+            <article class="skill-group">
+              <span class="skill-icon" aria-hidden="true">&lt;/&gt;</span>
+              <h3>Frontend & design</h3>
+              <ul>
+                <li>React & Next.js</li>
+                <li>TypeScript</li>
+                <li>Tailwind CSS</li>
+                <li>UI/UX design</li>
+                <li>Responsive interfaces</li>
+              </ul>
+            </article>
+            <article class="skill-group">
+              <span class="skill-icon" aria-hidden="true">{ }</span>
+              <h3>Backend & systems</h3>
+              <ul>
+                <li>PHP & Node.js</li>
+                <li>MySQL & PostgreSQL</li>
+                <li>REST APIs</li>
+                <li>Docker</li>
+                <li>Application workflows</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section
+        class="container section"
+        id="upcoming"
+        aria-labelledby="upcoming-title"
+      >
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">Always exploring</div>
+            <h2 id="upcoming-title">The next chapter</h2>
+          </div>
+          <p>
+            A space for upcoming builds and the ideas I'm learning about along
+            the way.
+          </p>
+        </div>
+        <div class="upcoming-grid">
+          <article class="upcoming-card">
+            <span class="tag">Upcoming · To be announced</span>
+            <h3>Room for what's next.</h3>
+            <p>
+              New project details will appear here when they're ready to share.
+              No release date has been announced.
+            </p>
+            <a class="text-link" href="#contact"
+              >Have an idea we could build? →</a
+            >
+          </article>
+          <article class="upcoming-card learning-card">
+            <h3>Currently exploring</h3>
+            <p>Learning topics, not announced project releases.</p>
+            <ul class="learning-list">
+              <li>Advanced System Design <span>Architecture</span></li>
+              <li>Rust for Performance <span>Systems</span></li>
+              <li>Generative AI Patterns <span>AI / ML</span></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+      <section
+        class="container contact"
+        id="contact"
+        aria-labelledby="contact-title"
+      >
+        <div>
+          <div class="eyebrow">Your next idea starts with a hello</div>
+          <h2 id="contact-title">
+            Let's build something<br />worth exploring.
+          </h2>
+          <p>
+            Have a project in mind or want to talk about my work?<br />I'd love
+            to hear from you.
+          </p>
+        </div>
+        <div class="contact-actions">
+          <a class="btn btn-light" href="mailto:elvinlazmanuel@gmail.com"
+            >Say hello <span aria-hidden="true">↗</span></a
+          ><a
+            class="text-link"
+            href="https://www.linkedin.com/in/elvin-manuel-181940147/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View professional profile on LinkedIn (opens in a new tab)"
+            >View professional profile ↗</a
+          ><small>Email opens your mail app. No forms to fill out.</small>
+        </div>
+      </section>
+    </main>
+    <footer class="container site-footer">
+      <div>
+        © <span id="year">2026</span> Elvin Manuel. Made with intention.<br />Interactive
+        HTML concept · Inspired by Mockup 01
       </div>
-    </section>
-    <section class="container section" id="upcoming" aria-labelledby="upcoming-title">
-      <div class="section-heading"><div><div class="eyebrow">Always exploring</div><h2 id="upcoming-title">The next chapter</h2></div><p>A space for upcoming builds and the ideas I'm learning about along the way.</p></div>
-      <div class="upcoming-grid"><article class="upcoming-card"><span class="tag">Upcoming · To be announced</span><h3>Room for what's next.</h3><p>New project details will appear here when they're ready to share. No release date has been announced.</p><a class="text-link" href="#contact">Have an idea we could build? →</a></article><article class="upcoming-card learning-card"><h3>Currently exploring</h3><p>Learning topics, not announced project releases.</p><ul class="learning-list"><li>Advanced System Design <span>Architecture</span></li><li>Rust for Performance <span>Systems</span></li><li>Generative AI Patterns <span>AI / ML</span></li></ul></article></div>
-    </section>
-    <section class="container contact" id="contact" aria-labelledby="contact-title">
-      <div><div class="eyebrow">Your next idea starts with a hello</div><h2 id="contact-title">Let's build something<br>worth exploring.</h2><p>Have a project in mind or want to talk about my work?<br>I'd love to hear from you.</p></div>
-      <div class="contact-actions"><a class="btn btn-light" href="mailto:elvinlazmanuel@gmail.com">Say hello <span aria-hidden="true">↗</span></a><a class="text-link" href="https://www.linkedin.com/in/elvin-manuel-181940147/" target="_blank" rel="noopener noreferrer" aria-label="View professional profile on LinkedIn (opens in a new tab)">View professional profile ↗</a><small>Email opens your mail app. No forms to fill out.</small></div>
-    </section>
-  </main>
-  <footer class="container site-footer"><div>© <span id="year">2026</span> Elvin Manuel. Made with intention.<br>Interactive HTML concept · Inspired by Mockup 01</div><div class="footer-links"><a href="#projects">Work</a><a href="#about">About</a><a href="#home">Back to top ↑</a></div></footer>
+      <div class="footer-links">
+        <a href="#projects">Work</a><a href="#about">About</a
+        ><a href="#home">Back to top ↑</a>
+      </div>
+    </footer>
 
-  <dialog class="project-dialog" id="project-dialog" aria-labelledby="detail-title" aria-describedby="detail-description">
-    <div class="dialog-header"><span class="eyebrow">Inside the project</span><button class="close-button" type="button" data-close="project-dialog" aria-label="Close project details" autofocus>×</button></div>
-    <img class="dialog-image" id="detail-image" alt="" width="720" height="360">
-    <div class="dialog-body"><div class="project-category" id="detail-category"></div><h3 id="detail-title"></h3><p id="detail-description"></p><div class="tags" id="detail-tags"></div><a class="btn btn-primary" id="detail-link" target="_blank" rel="noopener noreferrer">Visit live site ↗</a><small>Opens an external site in a new tab. Some projects require an account.</small></div>
-  </dialog>
-  <button class="btn btn-primary guide-launcher" id="guide-launcher" type="button" aria-haspopup="dialog" aria-controls="guide-dialog" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 11.5a8.5 8.5 0 0 1-12 7.7L3 21l1.7-5A8.5 8.5 0 1 1 20 11.5Z"/><path d="M8 10h8M8 14h5"/></svg>Portfolio guide</button>
-  <dialog class="guide-dialog" id="guide-dialog" aria-labelledby="guide-title" aria-describedby="guide-disclaimer">
-    <div class="dialog-header"><div class="guide-heading"><span class="guide-avatar" aria-hidden="true">e.</span><div><h2 id="guide-title">Your portfolio guide</h2><small>A little help finding your way</small></div></div><button class="close-button" type="button" data-close="guide-dialog" aria-label="Close portfolio guide" autofocus>×</button></div>
-    <div class="guide-body">
-      <div class="guide-log" id="guide-log" role="log" aria-label="Conversation with portfolio guide" aria-live="polite" aria-relevant="additions" tabindex="0"><p class="message">Hi, welcome to Elvin's portfolio! I can help you explore projects, find skills, or get in touch. Where would you like to start?</p></div>
-      <div class="guide-actions"><button class="btn btn-quiet" type="button" data-start-tour>Take a quick tour →</button><button class="btn btn-quiet" type="button" data-guide-topic="projects">Find a project</button><button class="btn btn-quiet" type="button" data-guide-topic="skills">Explore skills</button><button class="btn btn-quiet" type="button" data-guide-topic="upcoming">What's next?</button><button class="btn btn-quiet" type="button" data-guide-topic="contact">Get in touch</button></div>
-      <form class="guide-form" id="guide-form"><label class="sr-only" for="guide-input">Ask about projects, skills, upcoming work, or contact</label><input id="guide-input" maxlength="300" placeholder="Ask about Elvin's work…" autocomplete="off" required><button class="btn btn-primary" type="submit" aria-label="Send question">→</button></form>
-      <p class="guide-disclaimer" id="guide-disclaimer">Local, scripted guide—not a live chat or AI service. Messages stay in this page and are not sent or saved.</p>
-    </div>
-  </dialog>
-  <aside class="tour-panel" id="tour-panel" aria-labelledby="tour-title" hidden>
-    <div role="status" aria-atomic="true"><span class="tour-step" id="tour-step"></span><h2 id="tour-title"></h2><p id="tour-description"></p></div>
-    <div class="tour-controls"><button class="btn btn-quiet" id="tour-exit" type="button">End tour</button><div><button class="btn btn-quiet" id="tour-back" type="button">Back</button><button class="btn btn-primary" id="tour-next" type="button">Next →</button></div></div>
-  </aside>
-</body>
+    <dialog
+      class="project-dialog"
+      id="project-dialog"
+      aria-labelledby="detail-title"
+      aria-describedby="detail-description"
+    >
+      <div class="dialog-header">
+        <span class="eyebrow">Inside the project</span
+        ><button
+          class="close-button"
+          type="button"
+          data-close="project-dialog"
+          aria-label="Close project details"
+          autofocus
+        >
+          ×
+        </button>
+      </div>
+      <img
+        class="dialog-image"
+        id="detail-image"
+        alt=""
+        width="720"
+        height="360"
+      />
+      <div class="dialog-body">
+        <div class="project-category" id="detail-category"></div>
+        <h3 id="detail-title"></h3>
+        <p id="detail-description"></p>
+        <div class="tags" id="detail-tags"></div>
+        <a
+          class="btn btn-primary"
+          id="detail-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Visit live site ↗</a
+        ><small
+          >Opens an external site in a new tab. Some projects require an
+          account.</small
+        >
+      </div>
+    </dialog>
+    <button
+      class="btn btn-primary guide-launcher"
+      id="guide-launcher"
+      type="button"
+      aria-haspopup="dialog"
+      aria-controls="guide-dialog"
+      hidden
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        aria-hidden="true"
+      >
+        <path
+          d="M20 11.5a8.5 8.5 0 0 1-12 7.7L3 21l1.7-5A8.5 8.5 0 1 1 20 11.5Z"
+        />
+        <path d="M8 10h8M8 14h5" /></svg
+      >Portfolio guide
+    </button>
+    <dialog
+      class="guide-dialog"
+      id="guide-dialog"
+      aria-labelledby="guide-title"
+      aria-describedby="guide-disclaimer"
+    >
+      <div class="dialog-header">
+        <div class="guide-heading">
+          <span class="guide-avatar" aria-hidden="true">e.</span>
+          <div>
+            <h2 id="guide-title">Your portfolio guide</h2>
+            <small>A little help finding your way</small>
+          </div>
+        </div>
+        <button
+          class="close-button"
+          type="button"
+          data-close="guide-dialog"
+          aria-label="Close portfolio guide"
+          autofocus
+        >
+          ×
+        </button>
+      </div>
+      <div class="guide-body">
+        <div
+          class="guide-log"
+          id="guide-log"
+          role="log"
+          aria-label="Conversation with portfolio guide"
+          aria-live="polite"
+          aria-relevant="additions"
+          tabindex="0"
+        >
+          <p class="message">
+            Hi, welcome to Elvin's portfolio! I can help you explore projects,
+            find skills, or get in touch. Where would you like to start?
+          </p>
+        </div>
+        <div class="guide-actions">
+          <button class="btn btn-quiet" type="button" data-start-tour>
+            Take a quick tour →</button
+          ><button
+            class="btn btn-quiet"
+            type="button"
+            data-guide-topic="projects"
+          >
+            Find a project</button
+          ><button
+            class="btn btn-quiet"
+            type="button"
+            data-guide-topic="skills"
+          >
+            Explore skills</button
+          ><button
+            class="btn btn-quiet"
+            type="button"
+            data-guide-topic="upcoming"
+          >
+            What's next?</button
+          ><button
+            class="btn btn-quiet"
+            type="button"
+            data-guide-topic="contact"
+          >
+            Get in touch
+          </button>
+        </div>
+        <form class="guide-form" id="guide-form">
+          <label class="sr-only" for="guide-input"
+            >Ask about projects, skills, upcoming work, or contact</label
+          ><input
+            id="guide-input"
+            maxlength="300"
+            placeholder="Ask about Elvin's work…"
+            autocomplete="off"
+            required
+          /><button
+            class="btn btn-primary"
+            type="submit"
+            aria-label="Send question"
+          >
+            →
+          </button>
+        </form>
+        <p class="guide-disclaimer" id="guide-disclaimer">
+          Local, scripted guide—not a live chat or AI service. Messages stay in
+          this page and are not sent or saved.
+        </p>
+      </div>
+    </dialog>
+    <aside
+      class="tour-panel"
+      id="tour-panel"
+      aria-labelledby="tour-title"
+      hidden
+    >
+      <div role="status" aria-atomic="true">
+        <span class="tour-step" id="tour-step"></span>
+        <h2 id="tour-title"></h2>
+        <p id="tour-description"></p>
+      </div>
+      <div class="tour-controls">
+        <button class="btn btn-quiet" id="tour-exit" type="button">
+          End tour
+        </button>
+        <div>
+          <button class="btn btn-quiet" id="tour-back" type="button">
+            Back</button
+          ><button class="btn btn-primary" id="tour-next" type="button">
+            Next →
+          </button>
+        </div>
+      </div>
+    </aside>
+  </body>
 </html>

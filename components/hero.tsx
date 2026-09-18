@@ -1,62 +1,41 @@
-import { Button } from "@/components/ui/button"
-import { Play, Info } from "lucide-react"
+"use client"
 
-export function Hero() {
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
-  }
+import { ArrowUpRight, ArrowRight } from "lucide-react"
+import { projects, type SectionId } from "@/lib/portfolio-data"
 
+interface HeroProps {
+  onNavigate: (section: SectionId) => void
+  onStartTour: () => void
+  highlighted: boolean
+}
+
+export function Hero({ onNavigate, onStartTour, highlighted }: HeroProps) {
   return (
-    <section className="relative w-full h-[80vh] md:h-screen flex items-center overflow-hidden" aria-label="Hero section">
-      {/* Background Image / Overlay */}
-      <div className="absolute inset-0 z-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-10000 hover:scale-105"
-          style={{
-            backgroundImage: `linear-gradient(to right, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.4) 40%, rgba(20, 20, 20, 0) 100%), url('/modern-cinematic-tech-workspace-background.jpg')`,
-          }}
-          aria-hidden="true"
-        />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(229,9,20,0.1)_0%,transparent_50%)] animate-pulse" aria-hidden="true" />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="max-w-2xl animate-fade-in-up">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight leading-tight">
-            Designing <span className="text-primary italic">Experiences</span>,
-            <br /> Building Futures.
-          </h1>
-
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-lg leading-relaxed">
-            I'm a Full Stack Developer specializing in building high-performance web applications with modern
-            technologies. Passionate about clean code and exceptional user experience.
-          </p>
-
-          <div className="flex flex-wrap gap-4">
-            <Button
-              size="lg"
-              className="bg-white text-black hover:bg-white/90 font-bold px-8"
-              aria-label="View projects"
-              onClick={() => scrollToSection("projects")}
-            >
-              <Play className="mr-2 h-5 w-5 fill-current" /> View Projects
-            </Button>
-            <Button
-              size="lg"
-              variant="secondary"
-              className="bg-muted/50 hover:bg-muted font-bold px-8 backdrop-blur-md"
-              aria-label="Learn more about me"
-              onClick={() => scrollToSection("about")}
-            >
-              <Info className="mr-2 h-5 w-5" /> More Info
-            </Button>
-          </div>
+    <section className="pf-container pf-hero" id="home" aria-labelledby="hero-title">
+      <div id="hero-copy" className={`pf-hero-copy${highlighted ? " pf-tour-target" : ""}`}>
+        <div className="pf-eyebrow">Code meets creativity</div>
+        <h1 id="hero-title" tabIndex={-1}>
+          Designing<br />experiences.<br />Building <span>futures.</span>
+        </h1>
+        <p>Hi, I&apos;m Elvin. A full-stack developer turning ideas into thoughtful websites, useful applications, and interactive experiences.</p>
+        <div className="pf-hero-actions">
+          <a className="pf-btn pf-btn-primary" href="#projects" onClick={(event) => { event.preventDefault(); onNavigate("projects") }}>
+            Explore my work <ArrowUpRight size={18} aria-hidden="true" />
+          </a>
+          <button type="button" className="pf-btn pf-btn-quiet" onClick={onStartTour}>
+            Take a quick tour <ArrowRight size={18} aria-hidden="true" />
+          </button>
         </div>
+        <div className="pf-hero-shortcuts">
+          <a className="pf-link" href="#skills" onClick={(event) => { event.preventDefault(); onNavigate("skills") }}>Explore skills →</a>
+          <a className="pf-link" href="#contact" onClick={(event) => { event.preventDefault(); onNavigate("contact") }}>Let&apos;s talk ↗</a>
+        </div>
+        <div className="pf-hero-note">{projects.length} projects to explore · From registration to augmented reality</div>
       </div>
-
-      {/* Bottom Fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-10" aria-hidden="true" />
+      <figure className="pf-hero-art">
+        <img src="/mockups/hero-showcase.png" alt="Dark developer workspace with a laptop displaying the red-accented portfolio design concept" width={1376} height={768} fetchPriority="high" />
+        <figcaption><span>Behind the build</span><span>Portfolio concept / 01</span></figcaption>
+      </figure>
     </section>
   )
 }

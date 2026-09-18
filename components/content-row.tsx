@@ -1,54 +1,58 @@
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
-import { RowCard } from "./row-card"
+"use client"
 
-interface ContentItem {
-  id: string
-  title: string
-  category: string
-  image: string
-  link?: string
-}
+import { useRef } from "react"
+import { Search } from "lucide-react"
+import { RowCard } from "./row-card"
+import { filterProjects, projectFilters, type Project, type ProjectFilter } from "@/lib/portfolio-data"
 
 interface ContentRowProps {
-  title: string
-  items: ContentItem[]
+  items: Project[]
+  category: ProjectFilter
+  query: string
+  onFilter: (category: ProjectFilter, query: string) => void
+  onSelect: (project: Project, trigger: HTMLElement) => void
+  highlighted: boolean
 }
 
-export function ContentRow({ title, items }: ContentRowProps) {
+export function ContentRow({ items, category, query, onFilter, onSelect, highlighted }: ContentRowProps) {
+  const visible = filterProjects(items, category, query)
+  const search = useRef<HTMLInputElement>(null)
   return (
-    <section className="relative py-6 md:py-8 pl-4 md:pl-8 lg:pl-16 overflow-hidden">
-      <h2 className="text-xl md:text-2xl font-bold mb-4 tracking-tight transition-all duration-300 hover:text-muted-foreground cursor-pointer inline-flex items-center gap-2">
-        {title}
-        <span className="text-xs text-primary opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0">
-          Explore All
-        </span>
-      </h2>
-
-      <Carousel
-        opts={{
-          align: "start",
-          loop: false,
-        }}
-        className="w-full group/carousel"
-      >
-        <CarouselContent className="-ml-2 md:-ml-4">
-          {items.map((item, index) => (
-            <CarouselItem
-              key={item.id}
-              className="pl-2 md:pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6"
-            >
-              <RowCard {...item} index={index} />
-            </CarouselItem>
+    <section className="pf-container pf-section" id="projects" aria-labelledby="projects-title">
+      <div id="projects-heading" className={`pf-heading${highlighted ? " pf-tour-target" : ""}`}>
+        <div>
+          <div className="pf-eyebrow">A collection of things I&apos;ve built</div>
+          <div className="pf-title-line">
+            <h2 id="projects-title" tabIndex={-1}>Selected work</h2>
+            <span className="pf-count">{items.length} projects</span>
+          </div>
+        </div>
+        <p>Real projects, different challenges. Browse by type, explore the details, or visit a live site.</p>
+      </div>
+      <div className="pf-tools">
+        <div className="pf-filters" role="group" aria-label="Filter projects by type">
+          {projectFilters.map((filter) => (
+            <button type="button" className="pf-filter" key={filter.value} aria-pressed={category === filter.value}
+              aria-controls="project-grid" onClick={() => onFilter(filter.value, query)}>{filter.label}</button>
           ))}
-        </CarouselContent>
-
-        <div className="absolute top-0 bottom-0 left-0 w-12 bg-gradient-to-r from-background to-transparent z-10 opacity-0 group-hover/carousel:opacity-100 transition-opacity flex items-center pointer-events-none">
-          <CarouselPrevious className="relative left-2 pointer-events-auto border-none bg-transparent hover:bg-transparent hover:scale-125 transition-transform" />
         </div>
-        <div className="absolute top-0 bottom-0 right-0 w-12 bg-gradient-to-l from-background to-transparent z-10 opacity-0 group-hover/carousel:opacity-100 transition-opacity flex items-center justify-end pointer-events-none">
-          <CarouselNext className="relative right-2 pointer-events-auto border-none bg-transparent hover:bg-transparent hover:scale-125 transition-transform" />
+        <label className="pf-search">
+          <Search size={17} aria-hidden="true" /><span className="sr-only">Search projects or technologies</span>
+          <input ref={search} id="project-search" type="search" placeholder="Search projects or tech…" autoComplete="off"
+            maxLength={100} value={query} onChange={(event) => onFilter(category, event.target.value)} aria-controls="project-grid" />
+        </label>
+      </div>
+      <p className="pf-results" role="status" aria-atomic="true">Showing {visible.length} of {items.length} projects{query.trim() ? ` matching “${query.trim()}”` : ""}.</p>
+      <div className="pf-grid" id="project-grid">
+        {visible.map((project) => <RowCard key={project.id} project={project} index={items.indexOf(project)} onSelect={onSelect} />)}
+      </div>
+      {visible.length === 0 && (
+        <div className="pf-empty">
+          <h3>No projects found</h3><p>Try another name, technology, or category.</p>
+          <button type="button" className="pf-btn" onClick={() => { onFilter("all", ""); search.current?.focus() }}>Reset filters</button>
         </div>
-      </Carousel>
+      )}
+      <noscript><p>Enable JavaScript to filter projects and use the guide. All live project links remain available above.</p></noscript>
     </section>
   )
 }

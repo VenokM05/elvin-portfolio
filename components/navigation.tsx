@@ -1,133 +1,93 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Menu, X, Volume2, VolumeX } from "lucide-react"
-import { ResumeModal } from "./resume-modal"
+import { useEffect, useRef, useState } from "react"
+import { Menu, X } from "lucide-react"
+import { profile, type SectionId } from "@/lib/portfolio-data"
 
-export function Navigation() {
-  const [scrolled, setScrolled] = useState(false)
-  const [scrollProgress, setScrollProgress] = useState(0)
-  const [isMuted, setIsMuted] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isResumeModalOpen, setIsResumeModalOpen] = useState(false)
+const links: { section: SectionId; label: string }[] = [
+  { section: "projects", label: "Selected work" },
+  { section: "about", label: "About & skills" },
+  { section: "upcoming", label: "What's next" },
+  { section: "contact", label: "Contact" },
+]
+
+interface NavigationProps {
+  onNavigate: (section: SectionId) => void
+  onResume: (trigger: HTMLElement) => void
+}
+
+export function Navigation({ onNavigate, onResume }: NavigationProps) {
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState<SectionId | null>(null)
+  const header = useRef<HTMLElement>(null)
+  const toggle = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight
-      const progress = (window.scrollY / totalHeight) * 100
-      setScrollProgress(progress)
+    const update = () => {
+      const current = links.filter(({ section }) => {
+        const element = document.getElementById(section)
+        return element && element.getBoundingClientRect().top <= 160
+      }).at(-1)
+      setActive(current?.section ?? null)
     }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    update()
+    window.addEventListener("scroll", update, { passive: true })
+    window.addEventListener("resize", update)
+    return () => { window.removeEventListener("scroll", update); window.removeEventListener("resize", update) }
   }, [])
 
-  const navLinks = [
-    { name: "About", href: "#about" },
-    { name: "Projects", href: "#projects" },
-    { name: "Experience", href: "#experience" },
-    { name: "Contact", href: "#contact" },
-  ]
+  useEffect(() => {
+    if (!open) return
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { setOpen(false); toggle.current?.focus(); event.preventDefault() }
+    }
+    const outside = (event: PointerEvent) => {
+      if (!header.current?.contains(event.target as Node)) setOpen(false)
+    }
+    const desktop = window.matchMedia("(min-width: 801px)")
+    const resize = () => {
+      if (desktop.matches) {
+        if (document.activeElement === toggle.current || document.activeElement?.classList.contains("pf-mobile-resume")) {
+          header.current?.querySelector<HTMLAnchorElement>(".pf-brand")?.focus()
+        }
+        setOpen(false)
+      }
+    }
+    document.addEventListener("keydown", escape)
+    document.addEventListener("pointerdown", outside)
+    desktop.addEventListener("change", resize)
+    return () => {
+      document.removeEventListener("keydown", escape)
+      document.removeEventListener("pointerdown", outside)
+      desktop.removeEventListener("change", resize)
+    }
+  }, [open])
 
-  // Function to handle navigation and close mobile menu
-  const handleNavigation = () => {
-    setIsMobileMenuOpen(false);
-  }
-
+  const navigate = (section: SectionId) => { setOpen(false); onNavigate(section) }
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled || isMobileMenuOpen ? "bg-background/95 backdrop-blur-sm shadow-lg" : "bg-transparent"
-      }`}
-      role="navigation"
-      aria-label="Main navigation"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-primary rounded flex items-center justify-center font-bold text-lg md:text-xl text-white">
-              E
-            </div>
-            <span className="font-bold text-base md:text-lg tracking-tight">Elvin Manuel</span>
-          </Link>
-
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                onClick={handleNavigation}
-              >
-                {link.name}
-              </Link>
-            ))}
-
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-muted-foreground hover:text-primary transition-colors"
-              onClick={() => setIsMuted(!isMuted)}
-              title={isMuted ? "Unmute sound" : "Mute sound"}
-            >
-              {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-            </Button>
-
-            <Button variant="default" size="sm" className="font-bold" onClick={() => setIsResumeModalOpen(true)}>
-              Resume
-            </Button>
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </Button>
-        </div>
+    <header className="pf-header" ref={header} onBlur={(event) => {
+      if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false)
+    }}>
+      <div className="pf-container pf-header-inner">
+        <a className="pf-brand" href="#home" aria-label="Elvin Manuel, back to top" onClick={(event) => { event.preventDefault(); navigate("home") }}>
+          <span className="pf-brand-mark" aria-hidden="true">E</span>
+          <span>{profile.name}<small>Developer & creative builder</small></span>
+        </a>
+        <nav id="navigation" className="pf-nav" data-open={open} aria-label="Main navigation">
+          {links.map(({ section, label }) => (
+            <a key={section} href={`#${section}`} aria-current={active === section ? "location" : undefined}
+              onClick={(event) => { event.preventDefault(); navigate(section) }}>{label}</a>
+          ))}
+          <button type="button" className="pf-btn pf-mobile-resume" onClick={() => {
+            setOpen(false)
+            if (toggle.current) onResume(toggle.current)
+          }}>Resume & profile</button>
+        </nav>
+        <button type="button" className="pf-btn pf-btn-quiet pf-header-cta" onClick={(event) => onResume(event.currentTarget)}>Resume ↗</button>
+        <button ref={toggle} type="button" className="pf-btn pf-btn-quiet pf-menu-toggle" aria-controls="navigation" aria-expanded={open} onClick={() => setOpen(!open)}>
+          {open ? "Close" : "Menu"}{open ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
+        </button>
       </div>
-
-      <div
-        className="h-[3px] bg-primary transition-all duration-150 ease-out"
-        style={{ width: `${scrollProgress}%` }}
-      />
-
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border animate-in slide-in-from-top duration-200">
-          <div className="px-4 pt-2 pb-6 space-y-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="block text-lg font-medium py-2 border-b border-border/50"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <Button
-              variant="default"
-              className="w-full font-bold"
-              onClick={() => {
-                setIsResumeModalOpen(true)
-                setIsMobileMenuOpen(false)
-              }}
-            >
-              Resume
-            </Button>
-          </div>
-        </div>
-      )}
-
-      <ResumeModal isOpen={isResumeModalOpen} onClose={() => setIsResumeModalOpen(false)} />
-    </nav>
+    </header>
   )
 }

@@ -1,105 +1,60 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
+import { useEffect, useRef, useState, type FormEvent } from "react"
+import { DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { profile } from "@/lib/portfolio-data"
 
-// Replace with your Formspree endpoint (https://formspree.io)
-const FORMSPREE_ENDPOINT = "/YOUR_FORMSPREE_ID"
+// Rendered inside the shared portfolio dialog so guide actions never stack modals.
+export function ContactModal() {
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle")
+  const [error, setError] = useState("")
+  const request = useRef<AbortController | null>(null)
+  useEffect(() => () => request.current?.abort(), [])
 
-interface ContactModalProps {
-  isOpen: boolean
-  onClose: () => void
-}
-
-export function ContactModal({ isOpen, onClose }: ContactModalProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setSubmitStatus("idle")
-
-    const formData = new FormData(e.currentTarget)
-
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (request.current) return
+    const form = event.currentTarget
+    const data = Object.fromEntries(new FormData(form))
+    const controller = new AbortController()
+    request.current = controller
+    setStatus("sending")
+    setError("")
     try {
-      const response = await fetch(`https://formspree.io/f/${FORMSPREE_ENDPOINT}`, {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        body: formData,
+      const response = await fetch("/api/contact", {
+        method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(data), signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]),
       })
-
-      if (response.ok) {
-        setSubmitStatus("success")
-        ;(e.target as HTMLFormElement).reset()
-        setTimeout(() => {
-          onClose()
-          setSubmitStatus("idle")
-        }, 2000)
-      } else {
-        setSubmitStatus("error")
-      }
-    } catch {
-      setSubmitStatus("error")
-    } finally {
-      setIsSubmitting(false)
-    }
+      const result = await response.json()
+      if (!response.ok || result.ok !== true) throw new Error(result.error || "We couldn't confirm delivery. Please try again or email me directly.")
+      if (controller.signal.aborted) return
+      form.reset()
+      setStatus("success")
+    } catch (failure) {
+      if (controller.signal.aborted) return
+      setError(failure instanceof Error && failure.name === "Error" ? failure.message : "We couldn't confirm delivery. Please try again or email me directly.")
+      setStatus("error")
+    } finally { request.current = null }
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] bg-background border-border">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Get In Touch</DialogTitle>
-          <DialogDescription className="text-muted-foreground">
-            Have a project in mind? Let&apos;s build something amazing together.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-6 mt-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
-            <Input id="name" name="name" placeholder="Elvin Manuel" required className="bg-secondary/50 border-border" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="elvin@example.com"
-              required
-              className="bg-secondary/50 border-border"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="message">Message</Label>
-            <Textarea
-              id="message"
-              name="message"
-              placeholder="Tell me about your project..."
-              required
-              className="bg-secondary/50 border-border min-h-[120px]"
-            />
-          </div>
-
-          {submitStatus === "success" && (
-            <p className="text-sm text-green-500 font-medium">Message sent successfully! I&apos;ll get back to you soon.</p>
-          )}
-          {submitStatus === "error" && (
-            <p className="text-sm text-destructive font-medium">Something went wrong. Please try again or email me directly.</p>
-          )}
-
-          <Button type="submit" className="w-full font-bold py-6 text-lg" disabled={isSubmitting}>
-            {isSubmitting ? "Sending..." : "Send Message"}
-          </Button>
-        </form>
-      </DialogContent>
-    </Dialog>
+    <div className="pf-dialog-body">
+      <DialogTitle tabIndex={-1} data-modal-focus>Get in touch</DialogTitle>
+      <DialogDescription>Have a project in mind? Send a message, or <a className="pf-link" href={`mailto:${profile.email}`}>email me directly</a>. Submissions are processed by Formspree.</DialogDescription>
+      <form onSubmit={submit}>
+        <fieldset className="pf-form" disabled={status === "sending"} aria-busy={status === "sending"}>
+          <div className="pf-field"><Label htmlFor="contact-name">Name</Label><Input id="contact-name" name="name" autoComplete="name" placeholder="Your name" maxLength={100} required /></div>
+          <div className="pf-field"><Label htmlFor="contact-email">Email</Label><Input id="contact-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" maxLength={254} required /></div>
+          <div className="pf-field"><Label htmlFor="contact-message">Message</Label><Textarea id="contact-message" name="message" placeholder="Tell me about your project…" minLength={10} maxLength={5000} rows={5} required /></div>
+          <div className="sr-only" aria-hidden="true"><label htmlFor="contact-website">Leave this empty</label><input id="contact-website" name="website" tabIndex={-1} autoComplete="off" /></div>
+          <button className="pf-btn pf-btn-primary" type="submit">{status === "sending" ? "Sending…" : "Send message"}</button>
+        </fieldset>
+        {status === "success" && <p className="pf-success" role="status">Your message was submitted successfully. Thank you for reaching out!</p>}
+        {status === "error" && <p className="pf-error" role="alert">{error}</p>}
+      </form>
+    </div>
   )
 }

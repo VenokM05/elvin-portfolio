@@ -1,66 +1,60 @@
 "use client"
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Linkedin, Download, ExternalLink } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { Download, ExternalLink } from "lucide-react"
+import { DialogDescription, DialogTitle } from "@/components/ui/dialog"
+import { profile } from "@/lib/portfolio-data"
 
-interface ResumeModalProps {
-  isOpen: boolean
-  onClose: () => void
-}
+export function ResumeModal() {
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
+  const request = useRef<AbortController | null>(null)
+  const downloadUrl = useRef<string | null>(null)
+  useEffect(() => () => {
+    request.current?.abort()
+    if (downloadUrl.current) URL.revokeObjectURL(downloadUrl.current)
+  }, [])
 
-export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
-  const handleDownload = () => {
-    const link = document.createElement("a")
-    link.href = "/resume.pdf"
-    link.download = "Elvin_Manuel_Resume.pdf"
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    onClose()
+  const download = async () => {
+    if (request.current) return
+    const controller = new AbortController()
+    request.current = controller
+    setStatus("loading")
+    try {
+      const response = await fetch(profile.resume, {
+        cache: "no-store", signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]),
+      })
+      if (!response.ok || !response.headers.get("content-type")?.includes("application/pdf")) throw new Error("Resume unavailable")
+      const pdf = await response.blob()
+      if ((await pdf.slice(0, 5).text()) !== "%PDF-") throw new Error("Invalid PDF")
+      if (controller.signal.aborted) return
+      if (downloadUrl.current) URL.revokeObjectURL(downloadUrl.current)
+      downloadUrl.current = URL.createObjectURL(pdf)
+      const link = document.createElement("a")
+      link.href = downloadUrl.current
+      link.download = "Elvin_Manuel_Resume.pdf"
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      setStatus("success")
+    } catch {
+      if (!controller.signal.aborted) setStatus("error")
+    } finally { request.current = null }
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] bg-background border-border">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Resume & Profile</DialogTitle>
-        </DialogHeader>
-        <div className="grid grid-cols-1 gap-6 py-4">
-          <div className="flex flex-col items-center justify-center p-8 bg-secondary/30 rounded-lg border border-border/50 space-y-4">
-            <Linkedin className="w-16 h-16 text-[#0A66C2]" />
-            <div className="text-center">
-              <h3 className="text-xl font-bold">LinkedIn Profile</h3>
-              <p className="text-muted-foreground">Connect with me on LinkedIn for my full professional history.</p>
-            </div>
-            <Button asChild className="w-full bg-[#0A66C2] hover:bg-[#0A66C2]/90 text-white font-bold py-6">
-              <a href="https://linkedin.com/in/elvin-manuel-181940147" target="_blank" rel="noopener noreferrer">
-                View Profile <ExternalLink className="ml-2 w-4 h-4" />
-              </a>
-            </Button>
-          </div>
-
-          <div className="flex items-center justify-between p-4 bg-secondary/20 rounded-lg border border-border/30">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary/20 rounded flex items-center justify-center">
-                <Download className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="font-bold">Resume.pdf</p>
-                <p className="text-xs text-muted-foreground">Updated Jan 2026</p>
-              </div>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="font-bold border-primary text-primary hover:bg-primary/10 bg-transparent"
-              onClick={handleDownload}
-            >
-              Download
-            </Button>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+    <div className="pf-dialog-body">
+      <DialogTitle tabIndex={-1} data-modal-focus>Resume & profile</DialogTitle>
+      <DialogDescription>Download Elvin&apos;s resume when available, or explore his professional history on LinkedIn.</DialogDescription>
+      <div className="pf-form">
+        <a className="pf-btn" href={profile.linkedin} target="_blank" rel="noopener noreferrer">
+          View LinkedIn profile <ExternalLink size={18} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span>
+        </a>
+        <button className="pf-btn pf-btn-primary" type="button" onClick={download} disabled={status === "loading"}>
+          <Download size={18} aria-hidden="true" />{status === "loading" ? "Preparing PDF…" : "Download resume PDF"}
+        </button>
+        {status === "error" && <p className="pf-error" role="alert">The resume PDF is currently unavailable. Please <a className="pf-link" href={`mailto:${profile.email}?subject=Resume%20request`}>request a copy by email</a> or view LinkedIn.</p>}
+        {status === "success" && <p className="pf-success" role="status">Your PDF download has started.</p>}
+      </div>
+    </div>
   )
 }
