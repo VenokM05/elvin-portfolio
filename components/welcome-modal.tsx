@@ -109,12 +109,12 @@ export function WelcomeModal({ onStartTour }: WelcomeModalProps) {
             </div>
 
             <h2 id="welcome-title" className="pf-welcome-title">
-              Welcome to Elvin&apos;s Portfolio
+              Welcome
             </h2>
 
             <div className="pf-welcome-body">
               <p>
-                I&apos;m <strong>Elvin Manuel</strong> &mdash; a software engineer and IT specialist
+                I&apos;m <a href="https://www.linkedin.com/in/elvin-manuel-181940147/" target="_blank" rel="noopener noreferrer" className="pf-link"><strong>Elvin Manuel</strong></a> &mdash; a software engineer and IT specialist
                 with over a decade of experience. I started freelancing in 2014, went professional
                 in 2016, and have been building ever since.
               </p>
@@ -131,7 +131,7 @@ export function WelcomeModal({ onStartTour }: WelcomeModalProps) {
                 <span className="pf-welcome-stat-label">Years building</span>
               </div>
               <div className="pf-welcome-stat">
-                <span className="pf-welcome-stat-value"><AnimatedCounter target={10} /></span>
+                <span className="pf-welcome-stat-value"><AnimatedCounter target={12} /></span>
                 <span className="pf-welcome-stat-label">Projects shipped</span>
               </div>
               <div className="pf-welcome-stat">

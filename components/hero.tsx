@@ -54,7 +54,7 @@ export function Hero({ onNavigate, onStartTour, highlighted }: HeroProps) {
           animate={{ opacity: 1 }}
           transition={{ ...transition, delay: 0.6 }}
         >
-          Hi, I&apos;m Elvin. A software engineer and IT specialist with 10+ years building web applications, interactive games, and the infrastructure behind them.
+          Hi, I&apos;m Elvin. A software engineer and IT specialist with 10+ years building web applications, AI-powered tools, and the infrastructure behind them.
         </motion.p>
         <motion.div
           className="pf-hero-actions"

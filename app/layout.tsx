@@ -10,7 +10,7 @@ const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 const siteUrl = 'https://elvinmanuel.dev'
-const siteDescription = 'Software engineer & IT specialist with 10+ years building web applications, interactive games, AR experiences, and the infrastructure behind them.'
+const siteDescription = 'Software engineer & IT specialist with 10+ years building web applications, AI-powered tools, interactive games, AR experiences, and the infrastructure behind them.'
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -21,7 +21,7 @@ const jsonLd = {
   jobTitle: 'Software Engineer & IT Specialist',
   description: siteDescription,
   sameAs: [profile.github, profile.linkedin],
-  knowsAbout: ['Software Engineering', 'Web Development', 'Game Development', 'IT Infrastructure', 'C#', 'Unity', 'React', 'Next.js', 'PHP', 'Network Administration'],
+  knowsAbout: ['Software Engineering', 'Web Development', 'Game Development', 'IT Infrastructure', 'AI Integration', 'LLM APIs', 'Electron', 'C#', 'Unity', 'React', 'Next.js', 'PHP', 'Network Administration', 'Local AI', 'Ollama'],
 }
 
 export const metadata: Metadata = {
@@ -35,6 +35,7 @@ export const metadata: Metadata = {
     'Elvin Manuel', 'software engineer', 'IT specialist', 'web developer',
     'Unity', 'C#', 'React', 'Next.js', 'PHP', 'portfolio',
     'game development', 'AR experiences', 'hardware', 'networking',
+    'AI integration', 'Loki IDE', 'Odin Desktop', 'local AI', 'Ollama',
   ],
   authors: [{ name: profile.name, url: siteUrl }],
   creator: profile.name,

@@ -96,6 +96,20 @@ export const projects: Project[] = [
     tags: ["JavaScript", "HTML5", "Fullscreen", "Interactive UI", "React"],
     link: "https://virtual-registration.com/startup/rcbc/wall.php", aliases: ["rcbc", "commitment", "wall"],
   },
+  {
+    id: "loki", title: "Loki IDE", category: "systems", label: "AI-native IDE",
+    image: "/placeholder.svg",
+    description: "An AI-native, local-first desktop IDE built with Electron. Features Monaco editor, integrated terminal, Git UI, autonomous AI agent with multi-step task execution, inline completions, and smart model routing across Qwen, DeepSeek, and Ollama.",
+    tags: ["Electron", "React", "TypeScript", "AI/ML", "Node.js", "Monaco", "Ollama"],
+    link: "https://pixlint.com/projects/norse/presentation-deck.html", aliases: ["loki", "ide", "editor", "norse"],
+  },
+  {
+    id: "odin", title: "Odin Desktop", category: "systems", label: "Autonomous dev platform",
+    image: "/placeholder.svg",
+    description: "An autonomous development desktop that evolves Loki IDE into a task-centric, agent-driven platform. Users bring ideas; Odin executes through intelligent agent collaboration, real-environment operation, and proactive assistance.",
+    tags: ["Electron", "TypeScript", "AI Agents", "Local-first", "Task Automation", "Plugin SDK"],
+    link: "https://pixlint.com/projects/norse/presentation-deck.html", aliases: ["odin", "desktop", "autonomous", "norse"],
+  },
 ]
 
 export const projectFilters: { value: ProjectFilter; label: string }[] = [
@@ -110,10 +124,10 @@ export const skillGroups = [
   { title: "IT & infrastructure", icon: "\u2699", skills: ["Hardware troubleshooting & maintenance", "Network administration & configuration", "System deployment & management", "IT support & security protocols", "Equipment lifecycle management", "Infrastructure optimization"] },
 ]
 export const learningTopics = [
-  { title: "Unity Multiplayer & Netcode", category: "Game Dev" },
-  { title: "Advanced C# Patterns", category: "Development" },
-  { title: "Cloud & DevOps Pipelines", category: "Infrastructure" },
-  { title: "AR/VR Spatial Computing", category: "Emerging Tech" },
+  { title: "AI Integration & LLM APIs", category: "AI / ML" },
+  { title: "Local AI with Ollama", category: "Privacy-first" },
+  { title: "Autonomous Agent Patterns", category: "AI Architecture" },
+  { title: "AI-Driven Developer Tools", category: "Productivity" },
 ]
 
 export interface TimelineEntry {
@@ -129,7 +143,7 @@ export const careerTimeline: TimelineEntry[] = [
   { year: "2018", title: "IT Specialist Role", description: "Expanded into hardware, networking, and infrastructure management alongside software.", icon: "\u{1F5A5}\uFE0F" },
   { year: "2020", title: "Game Development", description: "Built interactive games and AR experiences for major brands using JavaScript and Unity.", icon: "\u{1F3AE}" },
   { year: "2023", title: "Full-Stack & Systems", description: "Delivered registration platforms, inventory systems, and digital passports at scale.", icon: "\u{1F310}" },
-  { year: "Now", title: "Building the Future", description: "Exploring Unity multiplayer, AR/VR spatial computing, and cloud-native architectures.", icon: "\u2728" },
+  { year: "Now", title: "AI-Powered Tools", description: "Learning AI and integrating it into personal projects \u2014 building Loki IDE and Odin Desktop, a Norse-forged AI development ecosystem.", icon: "\u{1F9E0}" },
 ]
 
 export function filterProjects(items: Project[], category: ProjectFilter, search: string): Project[] {

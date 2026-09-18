@@ -95,8 +95,8 @@ export function PortfolioSections({ target, onNavigate, onContact }: PortfolioSe
           <div className="pf-about-copy">
             <AnimatedEyebrow>The person behind the pixels</AnimatedEyebrow>
             <h2 id="about-title" tabIndex={-1}>A decade of building.<br />Rooted in curiosity.</h2>
-            <p>I&apos;m Elvin Manuel, a software engineer and IT specialist with over 10 years in software development. I started freelancing on small projects back in 2014, sharpening my skills along the way before going professional in 2016.</p>
-            <p>My background spans three worlds &mdash; hardware, networking, and software &mdash; which gives me a full-stack perspective on how systems actually work. From event registration platforms to interactive games and AR experiences, I enjoy turning complex problems into clean, usable solutions.</p>
+            <p>I&apos;m <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="pf-link" aria-label="Elvin Manuel on LinkedIn (opens in a new tab)">Elvin Manuel</a>, a software engineer and IT specialist with over 10 years in software development. I started freelancing on small projects back in 2014, sharpening my skills along the way before going professional in 2016.</p>
+            <p>My background spans three worlds &mdash; hardware, networking, and software &mdash; which gives me a full-stack perspective on how systems actually work. From event registration platforms to interactive games and AR experiences, and now AI-powered development tools, I enjoy turning complex problems into clean, usable solutions.</p>
             <a className="pf-link" href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="More about my background on LinkedIn (opens in a new tab)">More about my background ↗</a>
           </div>
           <div className={`pf-skill-columns${highlight("skills")}`} id="skills" tabIndex={-1} role="region" aria-label="Development skills">
@@ -152,9 +152,9 @@ export function PortfolioSections({ target, onNavigate, onContact }: PortfolioSe
           transition={{ ...transition, delay: 0.2 }}
         >
           <article className="pf-upcoming-card">
-            <span className="pf-tag">In progress</span><h3>Expanding into Unity.</h3>
-            <p>Building on my game development experience with C# and Unity &mdash; creating richer interactive experiences, from browser-based games to full Unity applications with multiplayer support.</p>
-            <a className="pf-link" href="#contact" onClick={(event) => { event.preventDefault(); onNavigate("contact") }}>Have a project idea? Let&apos;s talk →</a>
+            <span className="pf-tag">In progress</span><h3>AI-powered development tools.</h3>
+            <p>Learning AI and integrating it into my personal projects &mdash; building <strong>Loki IDE</strong>, an AI-native local-first editor, and <strong>Odin Desktop</strong>, an autonomous development platform where code never leaves your machine.</p>
+            <a className="pf-link" href="https://pixlint.com/projects/norse/presentation-deck.html" target="_blank" rel="noopener noreferrer">See the presentation deck ↗</a>
           </article>
           <article className="pf-upcoming-card pf-learning" id="learning">
             <h3>Currently exploring</h3><p>Technologies and topics I&apos;m actively learning to expand my skill set.</p>

@@ -18,7 +18,9 @@ export function Footer({ onNavigate }: { onNavigate: (section: SectionId) => voi
         <div className="pf-footer-brand">
           <span className="pf-footer-brand-mark" aria-hidden="true">E</span>
           <div>
-            <strong>{profile.name}</strong>
+            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Elvin Manuel on LinkedIn (opens in a new tab)">
+              <strong>{profile.name}</strong>
+            </a>
             <span>Software Engineer & IT Specialist</span>
           </div>
         </div>
@@ -64,7 +66,7 @@ export function Footer({ onNavigate }: { onNavigate: (section: SectionId) => voi
       </div>
 
       <div className="pf-footer-bottom">
-        <div>&copy; {new Date().getFullYear()} {profile.name}. Built with care.</div>
+        <div>&copy; {new Date().getFullYear()} <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Elvin Manuel on LinkedIn (opens in a new tab)">{profile.name}</a>. Built with care.</div>
         <a href="#home" onClick={(event) => { event.preventDefault(); onNavigate("home") }} className="pf-footer-top-link">
           Back to top <ArrowUpRight size={14} aria-hidden="true" />
         </a>
