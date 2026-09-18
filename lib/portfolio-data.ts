@@ -151,3 +151,31 @@ export function filterProjects(items: Project[], category: ProjectFilter, search
   return items.filter((project) => (category === "all" || project.category === category) &&
     [project.title, project.label, project.description, ...project.tags].join(" ").toLowerCase().includes(query))
 }
+
+// Brand marquee data
+export type BrandCategory = "client" | "tech"
+
+export interface BrandEntry {
+  id: string
+  name: string
+  category: BrandCategory
+  logo?: string
+  url?: string
+}
+
+export const defaultBrands: BrandEntry[] = [
+  { id: "b-rcbc", name: "RCBC", category: "client" },
+  { id: "b-mcdo", name: "McDonald\u2019s", category: "client" },
+  { id: "b-grab", name: "Grab", category: "client" },
+  { id: "b-viatris", name: "Viatris", category: "client" },
+  { id: "b-palawan", name: "Palawan", category: "client" },
+  { id: "b-ultramega", name: "Ultra Mega", category: "client" },
+  { id: "b-papp", name: "PAPP", category: "client" },
+  { id: "b-react", name: "React", category: "tech" },
+  { id: "b-nextjs", name: "Next.js", category: "tech" },
+  { id: "b-typescript", name: "TypeScript", category: "tech" },
+  { id: "b-unity", name: "Unity", category: "tech" },
+  { id: "b-electron", name: "Electron", category: "tech" },
+  { id: "b-php", name: "PHP", category: "tech" },
+  { id: "b-nodejs", name: "Node.js", category: "tech" },
+]

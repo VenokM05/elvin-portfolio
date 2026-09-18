@@ -741,3 +741,57 @@
     padding: 16px;
   }
 }
+
+/* ─── Admin Tabs ─── */
+
+.admin-tabs {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--border);
+  padding: 0 24px;
+}
+
+.admin-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-tab:hover {
+  color: var(--foreground);
+  background: var(--muted) / 0.5;
+}
+
+.admin-tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+/* ─── Brand Thumb ─── */
+
+.admin-brand-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-brand-text-preview {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  background: var(--muted);
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+}

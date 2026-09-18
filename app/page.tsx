@@ -13,6 +13,7 @@ import { WelcomeModal } from "@/components/welcome-modal"
 import { ScrollToTop } from "@/components/scroll-to-top"
 import { KeyboardShortcuts } from "@/components/keyboard-shortcuts"
 import { ScreenshotViewer } from "@/components/screenshot-viewer"
+import { BrandMarquee } from "@/components/brand-marquee"
 import { projects, type Project, type ProjectFilter, type SectionId } from "@/lib/portfolio-data"
 import { tourSteps, type GuideAction } from "@/lib/portfolio-guide"
 
@@ -147,6 +148,7 @@ export default function Home() {
         <ContentRow items={projectsList} category={category} query={query} onFilter={filter}
           onSelect={(project, trigger) => openModal({ kind: "project", project }, trigger)}
           onViewScreenshot={viewScreenshot} highlighted={target === "projects-heading"} />
+        <BrandMarquee />
         <PortfolioSections target={target} onNavigate={navigate} onContact={(trigger) => openModal({ kind: "contact" }, trigger)} />
       </main>
       <Footer onNavigate={navigate} />

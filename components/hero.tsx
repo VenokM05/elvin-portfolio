@@ -22,7 +22,7 @@ export function Hero({ onNavigate, onStartTour, highlighted }: HeroProps) {
     return () => mediaQuery.removeEventListener("change", handler)
   }, [])
 
-  const words = ["Software", "engineer.", "IT", "specialist."]
+  const lines = [["Software", "Engineer."], ["IT", "Specialist."]]
   const transition = { duration: prefersReducedMotion ? 0 : 0.5, ease: "easeOut" as const }
 
   return (
@@ -36,17 +36,23 @@ export function Hero({ onNavigate, onStartTour, highlighted }: HeroProps) {
       >
         <div className="pf-eyebrow">Code meets creativity</div>
         <h1 id="hero-title" tabIndex={-1}>
-          {words.map((word, index) => (
-            <motion.span
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...transition, delay: index * 0.15 }}
-              style={{ display: "inline-block" }}
-            >
-              {word}
-              {index < words.length - 1 && <br />}
-            </motion.span>
+          {lines.map((line, lineIndex) => (
+            <span key={lineIndex} style={{ display: "block" }}>
+              {line.map((word, wordIndex) => {
+                const globalIndex = lineIndex * 2 + wordIndex
+                return (
+                  <motion.span
+                    key={wordIndex}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ ...transition, delay: globalIndex * 0.15 }}
+                    style={{ display: "inline-block", marginRight: "0.3em" }}
+                  >
+                    {word}
+                  </motion.span>
+                )
+              })}
+            </span>
           ))}
         </h1>
         <motion.p

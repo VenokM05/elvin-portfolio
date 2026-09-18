@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { ArrowLeft, Plus, Edit, Trash2, LogOut, Image as ImageIcon, Link as LinkIcon, ToggleLeft, ToggleRight, RotateCcw, Shield, Search, X, Monitor } from "lucide-react"
-import { projects as defaultProjects, type Project, type ProjectCategory } from "@/lib/portfolio-data"
+import { ArrowLeft, Plus, Edit, Trash2, LogOut, Image as ImageIcon, Link as LinkIcon, ToggleLeft, ToggleRight, RotateCcw, Shield, Search, X, Monitor, FolderOpen, Sparkles } from "lucide-react"
+import { projects as defaultProjects, defaultBrands, type Project, type ProjectCategory, type BrandEntry, type BrandCategory } from "@/lib/portfolio-data"
 import "./admin.css"
 
 const ADMIN_PASSWORD = "admin123"
@@ -24,6 +24,16 @@ interface ProjectFormData {
   aliases: string[]
 }
 
+interface BrandFormData {
+  id: string
+  name: string
+  category: BrandCategory
+  logo: string
+  url: string
+}
+
+type AdminTab = "projects" | "brands"
+
 const categoryLabels: Record<ProjectCategory, string> = {
   web: "Web application",
   systems: "Management system",
@@ -41,12 +51,18 @@ export default function AdminPage() {
   const [showForm, setShowForm] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [notification, setNotification] = useState<{ message: string; type: "success" | "error" } | null>(null)
+  const [activeTab, setActiveTab] = useState<AdminTab>("projects")
+  const [brands, setBrands] = useState<BrandEntry[]>([])
+  const [editingBrand, setEditingBrand] = useState<BrandFormData | null>(null)
+  const [showBrandForm, setShowBrandForm] = useState(false)
+  const [brandSearch, setBrandSearch] = useState("")
 
   useEffect(() => {
     const auth = localStorage.getItem("admin_authenticated")
     if (auth === "true") {
       setIsAuthenticated(true)
       loadProjects()
+      loadBrands()
     }
   }, [])
 
@@ -76,6 +92,18 @@ export default function AdminPage() {
     }
   }
 
+  const loadBrands = () => {
+    const stored = localStorage.getItem("portfolio_brands")
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as BrandEntry[]
+        if (parsed.length > 0) { setBrands(parsed); return }
+      } catch { /* ignore */ }
+    }
+    setBrands(defaultBrands)
+    localStorage.setItem("portfolio_brands", JSON.stringify(defaultBrands))
+  }
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
     if (password === ADMIN_PASSWORD) {
@@ -83,6 +111,7 @@ export default function AdminPage() {
       localStorage.setItem("admin_authenticated", "true")
       setLoginError("")
       loadProjects()
+      loadBrands()
     } else {
       setLoginError("Invalid password. Please try again.")
     }
@@ -176,6 +205,77 @@ export default function AdminPage() {
     }
   }
 
+  const handleBrandDelete = (id: string) => {
+    const brand = brands.find((b) => b.id === id)
+    if (confirm(`Delete brand "${brand?.name}"? This cannot be undone.`)) {
+      const updated = brands.filter((b) => b.id !== id)
+      setBrands(updated)
+      localStorage.setItem("portfolio_brands", JSON.stringify(updated))
+      notify(`"${brand?.name}" deleted successfully`)
+    }
+  }
+
+  const handleBrandEdit = (brand: BrandEntry) => {
+    setEditingBrand({
+      id: brand.id,
+      name: brand.name,
+      category: brand.category,
+      logo: brand.logo ?? "",
+      url: brand.url ?? "",
+    })
+    setShowBrandForm(true)
+  }
+
+  const handleBrandAddNew = () => {
+    setEditingBrand({
+      id: `brand-${Date.now()}`,
+      name: "",
+      category: "client",
+      logo: "",
+      url: "",
+    })
+    setShowBrandForm(true)
+  }
+
+  const handleBrandSave = (formData: BrandFormData) => {
+    if (!formData.name.trim()) {
+      notify("Brand name is required", "error")
+      return
+    }
+    const brand: BrandEntry = {
+      id: formData.id,
+      name: formData.name.trim(),
+      category: formData.category,
+      logo: formData.logo || undefined,
+      url: formData.url || undefined,
+    }
+    let updated: BrandEntry[]
+    const exists = brands.find((b) => b.id === formData.id)
+    if (exists) {
+      updated = brands.map((b) => (b.id === formData.id ? brand : b))
+      notify(`"${brand.name}" updated successfully`)
+    } else {
+      updated = [...brands, brand]
+      notify(`"${brand.name}" added successfully`)
+    }
+    setBrands(updated)
+    localStorage.setItem("portfolio_brands", JSON.stringify(updated))
+    setShowBrandForm(false)
+    setEditingBrand(null)
+  }
+
+  const handleBrandReset = () => {
+    if (confirm("Reset all brands to default? This will remove all your custom changes.")) {
+      setBrands(defaultBrands)
+      localStorage.setItem("portfolio_brands", JSON.stringify(defaultBrands))
+      notify("Brands reset to defaults")
+    }
+  }
+
+  const filteredBrands = brandSearch.trim()
+    ? brands.filter((b) => [b.name, b.category].join(" ").toLowerCase().includes(brandSearch.toLowerCase()))
+    : brands
+
   const filteredProjects = searchQuery.trim()
     ? projects.filter((p) =>
         [p.title, p.label, p.category, ...p.tags].join(" ").toLowerCase().includes(searchQuery.toLowerCase())
@@ -247,12 +347,12 @@ export default function AdminPage() {
               <ArrowLeft size={18} />
             </button>
             <div>
-              <h1>Project Admin</h1>
-              <span className="admin-header-count">{projects.length} projects</span>
+              <h1>Admin Panel</h1>
+              <span className="admin-header-count">{activeTab === "projects" ? `${projects.length} projects` : `${brands.length} brands`}</span>
             </div>
           </div>
           <div className="admin-header-right">
-            <button onClick={handleReset} className="admin-btn admin-btn-quiet" title="Reset to defaults">
+            <button onClick={activeTab === "projects" ? handleReset : handleBrandReset} className="admin-btn admin-btn-quiet" title="Reset to defaults">
               <RotateCcw size={16} />
               <span>Reset</span>
             </button>
@@ -262,90 +362,198 @@ export default function AdminPage() {
             </button>
           </div>
         </div>
+        {/* Tabs */}
+        <div className="admin-tabs">
+          <button
+            className={`admin-tab${activeTab === "projects" ? " active" : ""}`}
+            onClick={() => setActiveTab("projects")}
+          >
+            <FolderOpen size={16} />
+            Projects
+          </button>
+          <button
+            className={`admin-tab${activeTab === "brands" ? " active" : ""}`}
+            onClick={() => setActiveTab("brands")}
+          >
+            <Sparkles size={16} />
+            Brands
+          </button>
+        </div>
       </header>
 
       {/* Content */}
       <main className="admin-content">
-        {/* Toolbar */}
-        <div className="admin-toolbar">
-          <label className="admin-search">
-            <Search size={16} />
-            <input
-              type="search"
-              placeholder="Search projects..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </label>
-          <button onClick={handleAddNew} className="admin-btn admin-btn-primary">
-            <Plus size={16} />
-            Add Project
-          </button>
-        </div>
+        {activeTab === "projects" ? (
+          <>
+            {/* Toolbar */}
+            <div className="admin-toolbar">
+              <label className="admin-search">
+                <Search size={16} />
+                <input
+                  type="search"
+                  placeholder="Search projects..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </label>
+              <button onClick={handleAddNew} className="admin-btn admin-btn-primary">
+                <Plus size={16} />
+                Add Project
+              </button>
+            </div>
 
-        {/* Project List */}
-        <div className="admin-project-list">
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="admin-project-card"
-              >
-                <div className="admin-project-thumb">
-                  <img src={project.image} alt={project.title} />
-                </div>
-                <div className="admin-project-info">
-                  <h3>{project.title}</h3>
-                  <div className="admin-project-meta">
-                    <span className={`admin-badge admin-badge-${project.category}`}>{project.label}</span>
-                    {project.link ? (
-                      <span className="admin-badge admin-badge-link">
-                        <LinkIcon size={10} /> Link ON
-                      </span>
-                    ) : (
-                      <span className="admin-badge admin-badge-no-link">
-                        <LinkIcon size={10} /> Link OFF
-                      </span>
-                    )}
-                    <span className="admin-badge admin-badge-tags">{project.tags.length} tags</span>
-                    {(project.screenshots?.length ?? 0) > 0 && (
-                      <span className="admin-badge admin-badge-screenshots">{project.screenshots!.length} screenshots</span>
-                    )}
-                    {project.banner && (
-                      <span className="admin-badge admin-badge-banner">
-                        <Monitor size={10} /> Banner
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <div className="admin-project-actions">
-                  <button onClick={() => handleEdit(project)} className="admin-btn admin-btn-icon" title="Edit">
-                    <Edit size={16} />
-                  </button>
-                  <button onClick={() => handleDelete(project.id)} className="admin-btn admin-btn-icon admin-btn-icon-danger" title="Delete">
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+            {/* Project List */}
+            <div className="admin-project-list">
+              <AnimatePresence mode="popLayout">
+                {filteredProjects.map((project) => (
+                  <motion.div
+                    key={project.id}
+                    layout
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="admin-project-card"
+                  >
+                    <div className="admin-project-thumb">
+                      <img src={project.image} alt={project.title} />
+                    </div>
+                    <div className="admin-project-info">
+                      <h3>{project.title}</h3>
+                      <div className="admin-project-meta">
+                        <span className={`admin-badge admin-badge-${project.category}`}>{project.label}</span>
+                        {project.link ? (
+                          <span className="admin-badge admin-badge-link">
+                            <LinkIcon size={10} /> Link ON
+                          </span>
+                        ) : (
+                          <span className="admin-badge admin-badge-no-link">
+                            <LinkIcon size={10} /> Link OFF
+                          </span>
+                        )}
+                        <span className="admin-badge admin-badge-tags">{project.tags.length} tags</span>
+                        {(project.screenshots?.length ?? 0) > 0 && (
+                          <span className="admin-badge admin-badge-screenshots">{project.screenshots!.length} screenshots</span>
+                        )}
+                        {project.banner && (
+                          <span className="admin-badge admin-badge-banner">
+                            <Monitor size={10} /> Banner
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="admin-project-actions">
+                      <button onClick={() => handleEdit(project)} className="admin-btn admin-btn-icon" title="Edit">
+                        <Edit size={16} />
+                      </button>
+                      <button onClick={() => handleDelete(project.id)} className="admin-btn admin-btn-icon admin-btn-icon-danger" title="Delete">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
 
-          {filteredProjects.length === 0 && (
-            <div className="admin-empty">
-              <ImageIcon size={32} />
-              <p>{searchQuery ? "No projects match your search" : "No projects yet"}</p>
-              {!searchQuery && (
-                <button onClick={handleAddNew} className="admin-btn admin-btn-primary">
-                  <Plus size={16} /> Add your first project
-                </button>
+              {filteredProjects.length === 0 && (
+                <div className="admin-empty">
+                  <ImageIcon size={32} />
+                  <p>{searchQuery ? "No projects match your search" : "No projects yet"}</p>
+                  {!searchQuery && (
+                    <button onClick={handleAddNew} className="admin-btn admin-btn-primary">
+                      <Plus size={16} /> Add your first project
+                    </button>
+                  )}
+                </div>
               )}
             </div>
-          )}
-        </div>
+          </>
+        ) : (
+          <>
+            {/* Brands Toolbar */}
+            <div className="admin-toolbar">
+              <label className="admin-search">
+                <Search size={16} />
+                <input
+                  type="search"
+                  placeholder="Search brands..."
+                  value={brandSearch}
+                  onChange={(e) => setBrandSearch(e.target.value)}
+                />
+              </label>
+              <button onClick={handleBrandAddNew} className="admin-btn admin-btn-primary">
+                <Plus size={16} />
+                Add Brand
+              </button>
+            </div>
+
+            {/* Brand List */}
+            <div className="admin-project-list">
+              <AnimatePresence mode="popLayout">
+                {filteredBrands.map((brand) => (
+                  <motion.div
+                    key={brand.id}
+                    layout
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="admin-project-card"
+                  >
+                    <div className="admin-project-thumb admin-brand-thumb">
+                      {brand.logo ? (
+                        <img src={brand.logo} alt={brand.name} />
+                      ) : (
+                        <div className="admin-brand-text-preview">
+                          <span>{brand.name.charAt(0)}</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="admin-project-info">
+                      <h3>{brand.name}</h3>
+                      <div className="admin-project-meta">
+                        <span className={`admin-badge admin-badge-${brand.category === "client" ? "web" : "systems"}`}>
+                          {brand.category === "client" ? "Client" : "Tech"}
+                        </span>
+                        {brand.logo ? (
+                          <span className="admin-badge admin-badge-link">
+                            <ImageIcon size={10} /> Logo
+                          </span>
+                        ) : (
+                          <span className="admin-badge admin-badge-no-link">
+                            Text only
+                          </span>
+                        )}
+                        {brand.url && (
+                          <span className="admin-badge admin-badge-link">
+                            <LinkIcon size={10} /> URL
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="admin-project-actions">
+                      <button onClick={() => handleBrandEdit(brand)} className="admin-btn admin-btn-icon" title="Edit">
+                        <Edit size={16} />
+                      </button>
+                      <button onClick={() => handleBrandDelete(brand.id)} className="admin-btn admin-btn-icon admin-btn-icon-danger" title="Delete">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+
+              {filteredBrands.length === 0 && (
+                <div className="admin-empty">
+                  <Sparkles size={32} />
+                  <p>{brandSearch ? "No brands match your search" : "No brands yet"}</p>
+                  {!brandSearch && (
+                    <button onClick={handleBrandAddNew} className="admin-btn admin-btn-primary">
+                      <Plus size={16} /> Add your first brand
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </main>
 
       {/* Project Form Modal */}
@@ -355,6 +563,17 @@ export default function AdminPage() {
             project={editingProject}
             onSave={handleSave}
             onCancel={() => { setShowForm(false); setEditingProject(null) }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Brand Form Modal */}
+      <AnimatePresence>
+        {showBrandForm && editingBrand && (
+          <BrandForm
+            brand={editingBrand}
+            onSave={handleBrandSave}
+            onCancel={() => { setShowBrandForm(false); setEditingBrand(null) }}
           />
         )}
       </AnimatePresence>
@@ -632,6 +851,150 @@ function ProjectForm({ project, onSave, onCancel }: ProjectFormProps) {
           <div className="admin-form-actions">
             <button type="submit" className="admin-btn admin-btn-primary admin-btn-grow">
               {isEditing ? "Save Changes" : "Add Project"}
+            </button>
+            <button type="button" onClick={onCancel} className="admin-btn admin-btn-quiet">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+/* ─── Brand Form Modal ─── */
+
+interface BrandFormProps {
+  brand: BrandFormData
+  onSave: (brand: BrandFormData) => void
+  onCancel: () => void
+}
+
+function BrandForm({ brand, onSave, onCancel }: BrandFormProps) {
+  const [formData, setFormData] = useState<BrandFormData>(brand)
+
+  const readFileAsBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onloadend = () => resolve(reader.result as string)
+      reader.onerror = reject
+      reader.readAsDataURL(file)
+    })
+  }
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 5 * 1024 * 1024) { alert("Logo must be under 5MB"); return }
+    const dataUrl = await readFileAsBase64(file)
+    setFormData({ ...formData, logo: dataUrl })
+    e.target.value = ""
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    onSave(formData)
+  }
+
+  const isEditing = !!brand.name
+
+  return (
+    <motion.div
+      className="admin-modal-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onCancel}
+    >
+      <motion.div
+        className="admin-modal"
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.95, opacity: 0 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="admin-modal-header">
+          <h2>{isEditing ? "Edit" : "Add"} Brand</h2>
+          <button onClick={onCancel} className="admin-btn admin-btn-icon" aria-label="Close">
+            ×
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="admin-form">
+          {/* Name */}
+          <div className="admin-field">
+            <label>Brand Name <span className="admin-required">*</span></label>
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              placeholder="e.g., RCBC, React, Grab"
+              required
+              autoFocus
+            />
+          </div>
+
+          {/* Category */}
+          <div className="admin-field">
+            <label>Category</label>
+            <div className="admin-category-grid">
+              <button
+                type="button"
+                className={`admin-category-btn${formData.category === "client" ? " active" : ""}`}
+                onClick={() => setFormData({ ...formData, category: "client" })}
+              >
+                Client
+              </button>
+              <button
+                type="button"
+                className={`admin-category-btn${formData.category === "tech" ? " active" : ""}`}
+                onClick={() => setFormData({ ...formData, category: "tech" })}
+              >
+                Tech
+              </button>
+            </div>
+            <p className="admin-hint">Client brands appear in the top row, tech in the bottom row.</p>
+          </div>
+
+          {/* Logo */}
+          <div className="admin-field">
+            <label>Logo Image <span className="admin-hint-inline">optional, shown instead of text</span></label>
+            {formData.logo && (
+              <div className="admin-image-preview admin-image-preview-sm">
+                <img src={formData.logo} alt="Logo preview" />
+                <button
+                  type="button"
+                  className="admin-image-remove"
+                  onClick={() => setFormData({ ...formData, logo: "" })}
+                  aria-label="Remove logo"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            )}
+            <div className="admin-file-input">
+              <ImageIcon size={20} />
+              <span>{formData.logo ? "Change logo" : "Upload logo"}</span>
+              <input type="file" accept="image/jpeg,image/png,image/webp,image/svg+xml" onChange={handleLogoUpload} />
+            </div>
+            <p className="admin-hint">PNG, SVG, or WebP recommended. Max 5MB. Falls back to text if not provided.</p>
+          </div>
+
+          {/* URL */}
+          <div className="admin-field">
+            <label>URL <span className="admin-hint-inline">optional, opens in new tab on click</span></label>
+            <input
+              type="url"
+              value={formData.url}
+              onChange={(e) => setFormData({ ...formData, url: e.target.value })}
+              placeholder="https://example.com"
+            />
+          </div>
+
+          {/* Actions */}
+          <div className="admin-form-actions">
+            <button type="submit" className="admin-btn admin-btn-primary admin-btn-grow">
+              {isEditing ? "Save Changes" : "Add Brand"}
             </button>
             <button type="button" onClick={onCancel} className="admin-btn admin-btn-quiet">
               Cancel
