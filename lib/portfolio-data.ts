@@ -107,7 +107,7 @@ export const skillGroups = [
   { title: "Frontend & design", icon: "</>", skills: ["React & Next.js", "TypeScript", "Vue.js", "Tailwind CSS", "Responsive UI/UX"] },
   { title: "Backend & databases", icon: "{ }", skills: ["PHP & Node.js", "MySQL & PostgreSQL", "REST APIs", "Application workflows", "Data architecture"] },
   { title: "Game development", icon: "\u25B6", skills: ["C# & Unity", "Interactive game mechanics", "AR experiences", "HTML5 Canvas", "Browser-based games"] },
-  { title: "IT & infrastructure", icon: "\u2699", skills: ["Hardware troubleshooting", "Network administration", "System deployment", "IT support & security", "Equipment management"] },
+  { title: "IT & infrastructure", icon: "\u2699", skills: ["Hardware troubleshooting & maintenance", "Network administration & configuration", "System deployment & management", "IT support & security protocols", "Equipment lifecycle management", "Infrastructure optimization"] },
 ]
 export const learningTopics = [
   { title: "Unity Multiplayer & Netcode", category: "Game Dev" },

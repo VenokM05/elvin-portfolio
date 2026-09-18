@@ -58,9 +58,9 @@ export function answerPortfolioQuestion(question: string, topic?: GuideTopic): G
 }
 
 export const tourSteps: { section: SectionId; target: string; title: string; text: string }[] = [
-  { section: "home", target: "hero-copy", title: "Meet Elvin", text: "A full-stack developer connecting thoughtful design with practical applications. Let's explore his work." },
-  { section: "projects", target: "projects-heading", title: "Find something that interests you", text: `Browse all ${projects.length} projects. Filter by type, search by technology, or select Explore project for details.` },
-  { section: "skills", target: "skills", title: "Look behind the build", text: "See Elvin's frontend, design, and backend skills. His LinkedIn profile has more about his professional background." },
-  { section: "upcoming", target: "upcoming-heading", title: "See what's on the horizon", text: "This area is reserved for upcoming projects. The learning topics are explorations, not promised releases." },
-  { section: "contact", target: "contact", title: "Start a conversation", text: "Use the contact form, send an email, or visit LinkedIn. Thanks for exploring Elvin's portfolio!" },
+  { section: "home", target: "hero-copy", title: "Meet Elvin", text: "A software engineer and IT specialist with 10+ years of experience \u2014 from freelancing in 2014 to building enterprise systems today. Let\u2019s explore his work." },
+  { section: "projects", target: "projects-heading", title: "Browse the projects", text: `Explore all ${projects.length} projects across web apps, systems, mobile, and games. Filter by category or search by technology like PHP, React, or Unity.` },
+  { section: "skills", target: "skills", title: "See the full skill set", text: "Four domains: frontend & design, backend & databases, game development with C# and Unity, plus IT infrastructure \u2014 hardware, networking, and security." },
+  { section: "upcoming", target: "upcoming-heading", title: "What\u2019s next", text: "See where things are headed \u2014 Unity multiplayer, advanced C#, cloud pipelines, and AR/VR spatial computing. Active learning, not announced releases." },
+  { section: "contact", target: "contact", title: "Start a conversation", text: "Have a project idea or want to collaborate? Send a message, drop an email, or connect on LinkedIn. Thanks for exploring Elvin\u2019s portfolio!" },
 ]

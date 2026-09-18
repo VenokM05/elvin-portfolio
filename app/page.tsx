@@ -9,6 +9,8 @@ import { Footer } from "@/components/footer"
 import { PortfolioIntro, PortfolioSections } from "@/components/portfolio-sections"
 import { PortfolioDialog, type PortfolioModal } from "@/components/portfolio-dialog"
 import { PortfolioTour } from "@/components/portfolio-tour"
+import { WelcomeModal } from "@/components/welcome-modal"
+import { ScrollToTop } from "@/components/scroll-to-top"
 import { ScreenshotViewer } from "@/components/screenshot-viewer"
 import { projects, type Project, type ProjectFilter, type SectionId } from "@/lib/portfolio-data"
 import { tourSteps, type GuideAction } from "@/lib/portfolio-guide"
@@ -146,6 +148,8 @@ export default function Home() {
       <PortfolioDialog modal={modal} onClose={closeModal} onAfterClose={afterClose} onGuideAction={guideAction} />
       <ScreenshotViewer project={screenshotProject} onClose={closeScreenshot} />
       {tourIndex !== null && <PortfolioTour index={tourIndex} onChange={setTourIndex} onEnd={endTour} />}
+      <WelcomeModal onStartTour={startTour} />
+      <ScrollToTop />
     </div>
   )
 }
