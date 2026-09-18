@@ -1254,3 +1254,93 @@ a.pf-marquee-item:focus-visible {
     padding: 8px 20px;
   }
 }
+
+/* ─── Pagination ─── */
+
+.pf-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px 0 8px;
+}
+
+.pf-pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  border: 1px solid var(--pf-border);
+  border-radius: 8px;
+  background: var(--pf-card);
+  color: var(--pf-text);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pf-pagination-btn:hover:not(:disabled) {
+  border-color: var(--pf-accent);
+  color: var(--pf-accent);
+  background: var(--pf-card-hover);
+}
+
+.pf-pagination-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.pf-pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pf-pagination-num {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--pf-border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--pf-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pf-pagination-num:hover {
+  border-color: var(--pf-accent);
+  color: var(--pf-text);
+}
+
+.pf-pagination-num.active {
+  background: var(--pf-accent);
+  border-color: var(--pf-accent);
+  color: var(--primary-foreground);
+  font-weight: 600;
+}
+
+.dark .pf-pagination-num.active {
+  background: transparent;
+  border-color: var(--border);
+  color: hsl(357 85% 45%);
+}
+
+@media (max-width: 480px) {
+  .pf-pagination {
+    gap: 8px;
+  }
+  .pf-pagination-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+  .pf-pagination-num {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+}

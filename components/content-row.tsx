@@ -1,10 +1,12 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Search } from "lucide-react"
+import { Search, ChevronLeft, ChevronRight } from "lucide-react"
 import { RowCard } from "./row-card"
 import { filterProjects, projectFilters, type Project, type ProjectFilter } from "@/lib/portfolio-data"
+
+const PER_PAGE = 6
 
 interface ContentRowProps {
   items: Project[]
@@ -20,6 +22,18 @@ export function ContentRow({ items, category, query, onFilter, onSelect, onViewS
   const visible = filterProjects(items, category, query)
   const search = useRef<HTMLInputElement>(null)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const [page, setPage] = useState(1)
+  const totalPages = Math.max(1, Math.ceil(visible.length / PER_PAGE))
+  const safePage = Math.min(page, totalPages)
+  const paginated = visible.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE)
+
+  // Reset to page 1 when filters or search change
+  useEffect(() => { setPage(1) }, [category, query])
+
+  const goToPage = useCallback((p: number) => {
+    setPage(Math.max(1, Math.min(p, totalPages)))
+    document.getElementById("project-grid")?.scrollIntoView({ behavior: "smooth", block: "start" })
+  }, [totalPages])
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -76,10 +90,11 @@ export function ContentRow({ items, category, query, onFilter, onSelect, onViewS
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3 }}
       >
         Showing {visible.length} of {items.length} projects{query.trim() ? ` matching "${query.trim()}"` : ""}.
+        {totalPages > 1 && ` — Page ${safePage} of ${totalPages}`}
       </motion.p>
       <AnimatePresence mode="popLayout">
         <div className="pf-grid" id="project-grid">
-          {visible.map((project, index) => (
+          {paginated.map((project, index) => (
             <motion.article
               key={project.id}
               layout
@@ -103,6 +118,43 @@ export function ContentRow({ items, category, query, onFilter, onSelect, onViewS
           <h3>No projects found</h3><p>Try another name, technology, or category.</p>
           <button type="button" className="pf-btn" onClick={() => { onFilter("all", ""); search.current?.focus() }}>Reset filters</button>
         </motion.div>
+      )}
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <nav className="pf-pagination" aria-label="Project pages">
+          <button
+            type="button"
+            className="pf-pagination-btn"
+            disabled={safePage <= 1}
+            onClick={() => goToPage(safePage - 1)}
+            aria-label="Previous page"
+          >
+            <ChevronLeft size={16} /> Prev
+          </button>
+          <div className="pf-pagination-pages">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+              <button
+                key={p}
+                type="button"
+                className={`pf-pagination-num${p === safePage ? " active" : ""}`}
+                onClick={() => goToPage(p)}
+                aria-label={`Page ${p}`}
+                aria-current={p === safePage ? "page" : undefined}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            className="pf-pagination-btn"
+            disabled={safePage >= totalPages}
+            onClick={() => goToPage(safePage + 1)}
+            aria-label="Next page"
+          >
+            Next <ChevronRight size={16} />
+          </button>
+        </nav>
       )}
       <noscript><p>Enable JavaScript to filter projects and use the guide. All live project links remain available above.</p></noscript>
     </section>
