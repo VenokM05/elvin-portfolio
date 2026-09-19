@@ -144,12 +144,13 @@
 .sp-orbit-core { display: grid; place-items: center; gap: 8px; width: 104px; height: 104px; border: 1px solid hsl(var(--sp-accent) / .5); border-radius: 24px; background: hsl(var(--sp-panel)); color: hsl(var(--sp-accent)); font: 10px var(--sp-mono); z-index: 1; }
 .sp-orbit-node { position: absolute; min-width: 96px; padding: 12px; border: 1px solid hsl(var(--sp-line)); border-radius: 10px; background: hsl(var(--sp-raised)); font: 11px var(--sp-mono) !important; z-index: 2; }
 .sp-orbit-node[aria-pressed=true] { color: hsl(var(--sp-accent)); border-color: hsl(var(--sp-accent)); }
-.sp-orbit-node:nth-of-type(1) { top: 25px; left: calc(50% - 48px); }
-.sp-orbit-node:nth-of-type(2) { right: 2%; top: 120px; }
-.sp-orbit-node:nth-of-type(3) { right: 8%; bottom: 55px; }
-.sp-orbit-node:nth-of-type(4) { bottom: 12px; left: calc(50% - 48px); }
-.sp-orbit-node:nth-of-type(5) { left: 6%; bottom: 80px; }
-.sp-orbit-node:nth-of-type(6) { left: 2%; top: 100px; }
+.sp-orbit-node:nth-of-type(1) { top: 10px; left: calc(50% - 48px); }
+.sp-orbit-node:nth-of-type(2) { top: 62px; right: 5px; }
+.sp-orbit-node:nth-of-type(3) { top: 185px; right: 0px; }
+.sp-orbit-node:nth-of-type(4) { bottom: 18px; right: 48px; }
+.sp-orbit-node:nth-of-type(5) { bottom: 18px; left: 48px; }
+.sp-orbit-node:nth-of-type(6) { top: 185px; left: 0px; }
+.sp-orbit-node:nth-of-type(7) { top: 62px; left: 5px; }
 .sp-stack-detail { padding: 32px; min-height: 250px; }
 .sp-stack-detail h3 { margin: 16px 0 12px; }
 .sp-stack-detail p { font-size: 13px; }
@@ -311,6 +312,13 @@
   .sp-device img { height: 240px; }
   .sp-orbit-ring { width: 260px; height: 260px; }
   .sp-orbit-node { min-width: 78px; font-size: 10px !important; padding: 10px; }
+  .sp-orbit-node:nth-of-type(1) { top: 8px; left: calc(50% - 39px); }
+  .sp-orbit-node:nth-of-type(2) { top: 52px; right: 2px; }
+  .sp-orbit-node:nth-of-type(3) { top: 160px; right: 0px; }
+  .sp-orbit-node:nth-of-type(4) { bottom: 14px; right: 38px; }
+  .sp-orbit-node:nth-of-type(5) { bottom: 14px; left: 38px; }
+  .sp-orbit-node:nth-of-type(6) { top: 160px; left: 0px; }
+  .sp-orbit-node:nth-of-type(7) { top: 52px; left: 2px; }
   .sp-it-stats > div { align-items: start; }
   .sp-it-stats strong { font-size: 12px; }
   .sp-it-stats small { font-size: 9px; }

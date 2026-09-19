@@ -19,7 +19,7 @@ export interface Project {
 export const profile = {
   name: "Elvin Manuel",
   email: "elvinlazmanuel@gmail.com",
-  viber: { display: "0924-442-6231", number: "+639244426231" },
+  viber: { display: "(+63) 924-442-6231", number: "+639244426231" },
   github: "https://github.com/VenokM05/",
   linkedin: "https://www.linkedin.com/in/elvin-manuel-181940147/",
   resume: "/resume.pdf",
@@ -101,7 +101,7 @@ export const projects: Project[] = [
     id: "loki", title: "Loki IDE", category: "systems", label: "AI-native IDE",
     image: "/placeholder.svg",
     description: "An AI-native, local-first desktop IDE built with Electron. Features Monaco editor, integrated terminal, Git UI, autonomous AI agent with multi-step task execution, inline completions, and smart model routing across Qwen, DeepSeek, and Ollama.",
-    tags: ["Electron", "React", "TypeScript", "AI/ML", "Node.js", "Monaco", "Ollama"],
+    tags: ["Electron", "React", "TypeScript", "AI/ML", "Node.js", "Monaco", "Ollama", "Git"],
     link: "https://pixlint.com/projects/norse/presentation-deck.html", aliases: ["loki", "ide", "editor", "norse"],
   },
   {
@@ -123,7 +123,9 @@ export const skillGroups = [
   { title: "Frontend & design", icon: "</>", skills: ["React & Next.js", "TypeScript", "Vue.js", "Tailwind CSS", "Responsive UI/UX"] },
   { title: "Backend & databases", icon: "{ }", skills: ["PHP & Node.js", "MySQL & PostgreSQL", "REST APIs", "Application workflows", "Data architecture"] },
   { title: "Game development", icon: "\u25B6", skills: ["C# & Unity", "Interactive game mechanics", "AR experiences", "HTML5 Canvas", "Browser-based games"] },
+  { title: "Version control & collaboration", icon: "⎇", skills: ["Git & GitHub", "Branch management & code review", "Collaborative development workflows", "Repository management", "Team-based version control"] },
   { title: "IT & infrastructure", icon: "\u2699", skills: ["Hardware troubleshooting & maintenance", "Network administration & configuration", "System deployment & management", "IT support & security protocols", "Equipment lifecycle management", "Infrastructure optimization"] },
+  { title: "AI & automation", icon: "\u26A1", skills: ["AI integration & LLM APIs", "Local AI with Ollama", "Autonomous agent patterns", "AI-driven developer tools", "Prompt engineering & workflows"] },
 ]
 export const learningTopics = [
   { title: "AI Integration & LLM APIs", category: "AI / ML" },

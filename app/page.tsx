@@ -157,7 +157,7 @@ export default function Home() {
       {tourIndex === null && (
         <button ref={launcher} type="button" id="guide-launcher" className="pf-btn pf-btn-primary pf-guide-launcher"
           aria-haspopup="dialog" onClick={(event) => openModal({ kind: "guide" }, event.currentTarget)}>
-          <MessageCircle size={20} aria-hidden="true" />Need a guide?
+          <MessageCircle size={20} aria-hidden="true" /><span className="pf-guide-label">Need a guide?</span>
         </button>
       )}
       <PortfolioDialog modal={modal} onClose={closeModal} onAfterClose={afterClose} onGuideAction={guideAction} />

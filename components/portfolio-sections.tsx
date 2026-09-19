@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { motion, useInView, useReducedMotion } from "framer-motion"
+import { motion, useInView } from "framer-motion"
 import { Mail, PhoneCall } from "lucide-react"
 import { learningTopics, profile, skillGroups, type SectionId } from "@/lib/portfolio-data"
 import { CareerTimeline } from "@/components/career-timeline"
@@ -13,25 +13,6 @@ function AnimatedEyebrow({ children, className = "" }: { children: React.ReactNo
     <div ref={ref} className={`pf-eyebrow${isInView ? " pf-eyebrow-visible" : ""} ${className}`}>
       {children}
     </div>
-  )
-}
-
-function AnimatedSkillItem({ skill, index }: { skill: string; index: number }) {
-  const ref = useRef<HTMLLIElement>(null)
-  const isInView = useInView(ref, { once: true, margin: "-30px" })
-  const prefersReducedMotion = useReducedMotion()
-  return (
-    <li ref={ref} className="pf-skill-item">
-      <span>{skill}</span>
-      <div className="pf-skill-bar">
-        <motion.div
-          className="pf-skill-bar-fill"
-          initial={{ width: "0%" }}
-          animate={isInView ? { width: "100%" } : { width: "0%" }}
-          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.6, delay: index * 0.08, ease: "easeOut" }}
-        />
-      </div>
-    </li>
   )
 }
 
@@ -110,25 +91,32 @@ export function PortfolioSections({ target, onNavigate, onContact }: PortfolioSe
             <p>I&apos;m <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="pf-link" aria-label="Elvin Manuel on LinkedIn (opens in a new tab)">Elvin Manuel</a>, a software engineer and IT specialist with over 10 years in software development. I started freelancing on small projects back in 2014, sharpening my skills along the way before going professional in 2016.</p>
             <p>My background spans three worlds &mdash; hardware, networking, and software &mdash; which gives me a full-stack perspective on how systems actually work. From event registration platforms to interactive games and AR experiences, and now AI-powered development tools, I enjoy turning complex problems into clean, usable solutions.</p>
             <p>I also run <a href="https://pixlint.com" target="_blank" rel="noopener noreferrer" className="pf-link" aria-label="Pixel Interactive (opens in a new tab)">Pixel Interactive</a>, an event technology company building interactive photobooths, mini games, and AI experiences for brands across the Philippines.</p>
-            <a className="pf-link" href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="More about my background on LinkedIn (opens in a new tab)">More about my background ↗</a>
+            <a className="pf-link pf-about-cta" href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="More about my background on LinkedIn (opens in a new tab)">More about my background <span aria-hidden="true">&rarr;</span></a>
           </div>
-          <div className={`pf-skill-columns${highlight("skills")}`} id="skills" tabIndex={-1} role="region" aria-label="Development skills">
-            {skillGroups.map((group, index) => (
-              <motion.article
-                className="pf-skill-group"
-                key={group.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ ...transition, delay: index * 0.1 }}
-              >
-                <span className="pf-skill-icon" aria-hidden="true">{group.icon}</span>
-                <h3>{group.title}</h3>
-                <ul>{group.skills.map((skill, si) => (
-                  <AnimatedSkillItem key={skill} skill={skill} index={si} />
-                ))}</ul>
-              </motion.article>
-            ))}
+          <div className="pf-skills-panel">
+            <div className="pf-skills-panel-header">
+              <span className="pf-skills-panel-label">Technical Skills</span>
+            </div>
+            <div className={`pf-skill-columns${highlight("skills")}`} id="skills" tabIndex={-1} role="region" aria-label="Development skills">
+              {skillGroups.map((group, index) => (
+                <motion.article
+                  className="pf-skill-group"
+                  key={group.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ ...transition, delay: index * 0.08 }}
+                >
+                  <div className="pf-skill-group-header">
+                    <span className="pf-skill-icon" aria-hidden="true">{group.icon}</span>
+                    <h3>{group.title}</h3>
+                  </div>
+                  <div className="pf-skill-tags">{group.skills.map((skill) => (
+                    <span key={skill} className="pf-skill-tag">{skill}</span>
+                  ))}</div>
+                </motion.article>
+              ))}
+            </div>
           </div>
         </motion.div>
       </section>

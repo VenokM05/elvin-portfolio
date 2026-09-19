@@ -1,17 +1,16 @@
 "use client"
 
-import { useState, type ReactNode } from "react"
+import { type ReactNode } from "react"
 import Link from "next/link"
-import { ArrowLeft, ArrowUpRight, Braces, Download, Mail, Network, Pause, Play, PhoneCall } from "lucide-react"
+import { ArrowLeft, ArrowUpRight, Braces, Download, Mail, Network, PhoneCall } from "lucide-react"
 import { profile } from "@/lib/portfolio-data"
 
 export type Specialty = "developer" | "it"
 
 export function SpecialtyShell({ kind, children }: { kind: Specialty; children: ReactNode }) {
-  const [paused, setPaused] = useState(false)
   const developer = kind === "developer"
   return (
-    <div className={`sp sp-${kind}`} data-motion={paused ? "paused" : "playing"}>
+    <div className={`sp sp-${kind}`}>
       <a className="sp-skip" href="#specialty-main">Skip to content</a>
       <header className="sp-header">
         <div className="sp-container sp-header-inner">
@@ -46,10 +45,6 @@ export function SpecialtyShell({ kind, children }: { kind: Specialty; children: 
       </section>
       <footer className="sp-container sp-footer">
         <span>© {new Date().getFullYear()} {profile.name} · {developer ? "Built with logic. Made for people." : "People first. Systems second."}</span>
-        <button type="button" className="sp-btn sp-btn-quiet" onClick={() => setPaused(!paused)} aria-pressed={paused} aria-label={paused ? "Resume decorative animations" : "Pause decorative animations"}>
-          {paused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}
-          {paused ? "Resume animations" : "Pause animations"}
-        </button>
         <nav aria-label="Footer navigation">
           <Link href="/"><ArrowLeft size={12} className="inline" aria-hidden="true" /> Main portfolio</Link>
           <a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>

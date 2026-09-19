@@ -13,6 +13,7 @@ export const stackNodes = [
   { name: "MySQL", group: "Data", description: "Structured information for registrations, equipment records, and application workflows.", tags: ["MySQL"] },
   { name: "PHP", group: "Backend", description: "Server-side logic and database-backed web applications.", tags: ["PHP"] },
   { name: "Vue.js", group: "Frontend", description: "Reactive interfaces for focused web tools and interactive experiences.", tags: ["Vue.js"] },
+  { name: "Git", group: "Workflow", description: "Version control, branch-based collaboration, code review, and team-based development workflows using GitHub.", tags: ["Git"] },
 ]
 
 export const networkNodes = [

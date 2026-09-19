@@ -6,20 +6,23 @@ import { careerTimeline } from "@/lib/portfolio-data"
 
 export function CareerTimeline() {
   const prefersReducedMotion = useReducedMotion()
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div className="pf-timeline" role="list" aria-label="Career timeline">
-      <div className="pf-timeline-line" aria-hidden="true" />
-      {careerTimeline.map((entry, index) => (
-        <TimelineItem key={entry.year} entry={entry} index={index} reduced={prefersReducedMotion ?? false} />
-      ))}
+    <div className="pf-timeline-scroll" ref={scrollRef}>
+      <div className="pf-timeline" role="list" aria-label="Career timeline">
+        <div className="pf-timeline-line" aria-hidden="true" />
+        {careerTimeline.map((entry, index) => (
+          <TimelineItem key={entry.year} entry={entry} index={index} reduced={prefersReducedMotion ?? false} />
+        ))}
+      </div>
     </div>
   )
 }
 
 function TimelineItem({ entry, index, reduced }: { entry: typeof careerTimeline[number]; index: number; reduced: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: "-60px" })
+  const isInView = useInView(ref, { once: true, margin: "-40px" })
 
   const transition = reduced
     ? { duration: 0 }
@@ -30,8 +33,8 @@ function TimelineItem({ entry, index, reduced }: { entry: typeof careerTimeline[
       ref={ref}
       className="pf-timeline-item"
       role="listitem"
-      initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={transition}
     >
       <div className="pf-timeline-dot" aria-hidden="true">
