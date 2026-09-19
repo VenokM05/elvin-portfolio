@@ -99,7 +99,7 @@ export const projects: Project[] = [
   },
   {
     id: "loki", title: "Loki IDE", category: "systems", label: "AI-native IDE",
-    image: "/loki.pg",
+    image: "/loki.png",
     description: "An AI-native, local-first desktop IDE built with Electron. Features Monaco editor, integrated terminal, Git UI, autonomous AI agent with multi-step task execution, inline completions, and smart model routing across Qwen, DeepSeek, and Ollama.",
     tags: ["Electron", "React", "TypeScript", "AI/ML", "Node.js", "Monaco", "Ollama", "Git"],
     link: "https://pixlint.com/projects/norse/presentation-deck.html", aliases: ["loki", "ide", "editor", "norse"],
