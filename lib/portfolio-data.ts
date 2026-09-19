@@ -19,6 +19,7 @@ export interface Project {
 export const profile = {
   name: "Elvin Manuel",
   email: "elvinlazmanuel@gmail.com",
+  viber: { display: "0924-442-6231", number: "+639244426231" },
   github: "https://github.com/VenokM05/",
   linkedin: "https://www.linkedin.com/in/elvin-manuel-181940147/",
   resume: "/resume.pdf",

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { motion, useInView, useReducedMotion } from "framer-motion"
+import { Mail, PhoneCall } from "lucide-react"
 import { learningTopics, profile, skillGroups, type SectionId } from "@/lib/portfolio-data"
 import { CareerTimeline } from "@/components/career-timeline"
 
@@ -64,6 +65,17 @@ export function PortfolioIntro() {
         <a className="pf-link" href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)">GitHub ↗</a>
         <a className="pf-link" href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)">LinkedIn ↗</a>
       </div>
+      <nav className="pf-intro-contact" aria-label="Reach out directly">
+        <span className="pf-intro-contact-heading">Reach out directly</span>
+        <a className="pf-intro-contact-link" href={`viber://chat?number=${encodeURIComponent(profile.viber.number)}`} title="Open a chat in Viber (Viber app required)" aria-label={`Viber: ${profile.viber.display} (opens Viber)`}>
+          <PhoneCall size={20} aria-hidden="true" />
+          <span><small>Viber</small>{profile.viber.display}</span>
+        </a>
+        <a className="pf-intro-contact-link" href={`mailto:${profile.email}`} aria-label={`Email: ${profile.email} (opens your mail app)`}>
+          <Mail size={20} aria-hidden="true" />
+          <span><small>Email</small>{profile.email}</span>
+        </a>
+      </nav>
     </motion.div>
   )
 }

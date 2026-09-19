@@ -1,8 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { motion } from "framer-motion"
-import { ArrowUpRight, ArrowRight } from "lucide-react"
+import { ArrowUpRight, ArrowRight, Braces, Network } from "lucide-react"
 import { projects, type Project, type SectionId } from "@/lib/portfolio-data"
 import { HeroShowcase } from "@/components/hero-showcase"
 
@@ -94,6 +95,11 @@ export function Hero({ onNavigate, onStartTour, onSelectProject, highlighted }: 
         >
           {projects.length} projects to explore · From registration to augmented reality
         </motion.div>
+        <nav className="pf-portfolio-paths" aria-label="Explore a specialized portfolio">
+          <span>Two sides of my work</span>
+          <Link href="/full-stack-developer"><Braces size={15} aria-hidden="true" />Full Stack Web Developer<ArrowUpRight size={13} aria-hidden="true" /></Link>
+          <Link href="/it-specialist"><Network size={15} aria-hidden="true" />IT Specialist<ArrowUpRight size={13} aria-hidden="true" /></Link>
+        </nav>
       </motion.div>
       <motion.div
         className="pf-hero-art-wrapper"

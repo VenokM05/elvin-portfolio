@@ -1,8 +1,9 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
+import Link from "next/link"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import { X, ArrowRight, Sparkles } from "lucide-react"
+import { X, ArrowRight, Sparkles, Globe, Server } from "lucide-react"
 
 function AnimatedCounter({ target, suffix = "", duration = 1200 }: { target: number; suffix?: string; duration?: number }) {
   const [count, setCount] = useState(0)
@@ -44,7 +45,8 @@ export function WelcomeModal({ onStartTour }: WelcomeModalProps) {
 
   useEffect(() => {
     setMounted(true)
-    const welcomed = localStorage.getItem("portfolio_welcomed")
+    let welcomed: string | null = null
+    try { welcomed = localStorage.getItem("portfolio_welcomed") } catch { /* Storage may be unavailable. */ }
     if (!welcomed) {
       const timer = setTimeout(() => setIsOpen(true), 600)
       return () => clearTimeout(timer)
@@ -53,7 +55,7 @@ export function WelcomeModal({ onStartTour }: WelcomeModalProps) {
 
   const handleClose = () => {
     setIsOpen(false)
-    localStorage.setItem("portfolio_welcomed", "true")
+    try { localStorage.setItem("portfolio_welcomed", "true") } catch { /* Navigation still works without storage. */ }
   }
 
   const handleStartTour = () => {
@@ -139,6 +141,21 @@ export function WelcomeModal({ onStartTour }: WelcomeModalProps) {
                 <span className="pf-welcome-stat-label">Skill domains</span>
               </div>
             </div>
+
+            <nav className="pf-welcome-roles" aria-label="Choose a portfolio">
+              <Link href="/full-stack-developer" className="pf-welcome-role" onClick={handleClose}>
+                <Globe size={15} aria-hidden="true" />
+                Full Stack Web Developer
+              </Link>
+              <Link href="/it-specialist" className="pf-welcome-role" onClick={handleClose}>
+                <Server size={15} aria-hidden="true" />
+                IT Specialist
+              </Link>
+            </nav>
+
+            <p className="pf-welcome-role-hint">
+              Click above to explore my Full Stack Web Developer or IT Specialist portfolio
+            </p>
 
             <div className="pf-welcome-actions">
               <button

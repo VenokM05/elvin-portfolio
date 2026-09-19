@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-const siteUrl = 'https://elvin-portfolio-murex.vercel.app/'
+const siteUrl = 'https://elvin-portfolio-murex.vercel.app'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -11,10 +11,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${siteUrl}/admin`,
+      url: `${siteUrl}/full-stack-developer`,
       lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.3,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: `${siteUrl}/it-specialist`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.9,
     },
   ]
 }

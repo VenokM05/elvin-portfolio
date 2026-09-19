@@ -310,6 +310,17 @@
 .pf-intro p { font-size: 14px; }
 .pf-intro strong { color: var(--pf-ink); font-weight: 550; }
 .pf-strip-links { display: flex; gap: 26px; align-items: center; }
+.pf-intro-contact { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; width: 100%; padding-top: 18px; border-top: 1px solid var(--pf-line); }
+.pf-intro-contact-heading { margin-right: auto; color: var(--pf-muted); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+.pf-intro-contact-link { display: inline-flex; align-items: center; gap: 12px; min-height: 58px; max-width: 100%; padding: 10px 16px; border: 1px solid var(--pf-line); border-radius: 10px; background: var(--pf-surface); color: var(--pf-ink); font-size: 14px; font-weight: 550; text-decoration: none; transition: background var(--pf-ease), border-color var(--pf-ease); }
+.pf-intro-contact-link:hover { background: var(--pf-raised); border-color: var(--pf-muted); }
+.pf-intro-contact-link svg { flex-shrink: 0; }
+.pf-intro-contact-link > span { min-width: 0; overflow-wrap: anywhere; }
+.pf-intro-contact-link small { display: block; color: var(--pf-muted); font-size: 10px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
+@media (max-width: 640px) {
+  .pf-intro-contact-heading { width: 100%; }
+  .pf-intro-contact-link { width: 100%; }
+}
 .pf-section { padding-top: 88px; }
 .pf-heading { display: flex; gap: 20px; justify-content: space-between; align-items: end; margin-bottom: 30px; }
 .pf-heading .pf-eyebrow { margin-bottom: 14px; }
@@ -622,6 +633,87 @@
   margin-top: 4px;
 }
 
+.pf-portfolio-paths { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.pf-portfolio-paths > span { width: 100%; color: var(--pf-muted); font-size: 10px; text-transform: uppercase; letter-spacing: .12em; }
+.pf-portfolio-paths a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 9px 12px; border: 1px solid var(--pf-line); border-radius: 8px; color: var(--pf-ink); font-size: 12px; background: var(--pf-surface); transition: border-color .2s ease; }
+.pf-portfolio-paths a:hover { border-color: var(--pf-muted); }
+.pf-portfolio-paths svg { flex-shrink: 0; }
+
+.pf-welcome-roles {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0 12px;
+}
+
+.pf-welcome-role {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--pf-line);
+  background: var(--pf-raised);
+  color: var(--pf-ink);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background var(--pf-ease), border-color var(--pf-ease), transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s cubic-bezier(.4,0,.2,1);
+}
+
+.pf-welcome-role::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--pf-accent) 8%, transparent), color-mix(in srgb, var(--pf-accent) 18%, transparent), color-mix(in srgb, var(--pf-accent) 8%, transparent));
+  opacity: 0;
+  animation: pf-role-pulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pf-role-pulse {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.pf-welcome-role:hover::before {
+  animation: none;
+  opacity: 0;
+}
+
+.pf-welcome-role-hint {
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--pf-muted);
+  margin: 0 0 6px;
+  letter-spacing: .02em;
+  opacity: .75;
+  animation: pf-hint-fade 4s ease-in-out infinite;
+}
+
+@keyframes pf-hint-fade {
+  0%, 100% { opacity: .55; }
+  50% { opacity: .9; }
+}
+
+.pf-welcome-role svg { flex-shrink: 0; }
+
+.pf-welcome-role:hover {
+  background: var(--pf-line);
+  border-color: var(--pf-muted);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 20px hsl(0 0% 0% / .2);
+}
+
+.pf-welcome-role:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: none;
+}
+
 .pf-welcome-actions {
   display: flex;
   gap: 10px;
@@ -631,6 +723,16 @@
 
 .pf-welcome-actions .pf-btn-primary {
   flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-welcome-role::before {
+    animation: none;
+  }
+  .pf-welcome-role-hint {
+    animation: none;
+    opacity: .7;
+  }
 }
 
 @media (max-width: 480px) {
@@ -649,6 +751,9 @@
   }
   .pf-welcome-stat:last-child {
     border-bottom: none;
+  }
+  .pf-welcome-roles {
+    flex-direction: column;
   }
   .pf-welcome-actions {
     flex-direction: column;
