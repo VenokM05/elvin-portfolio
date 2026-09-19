@@ -14,6 +14,7 @@ import { ScrollToTop } from "@/components/scroll-to-top"
 import { KeyboardShortcuts } from "@/components/keyboard-shortcuts"
 import { ScreenshotViewer } from "@/components/screenshot-viewer"
 import { BrandMarquee } from "@/components/brand-marquee"
+import { PixlintSection } from "@/components/pixlint-section"
 import { projects, type Project, type ProjectFilter, type SectionId } from "@/lib/portfolio-data"
 import { tourSteps, type GuideAction } from "@/lib/portfolio-guide"
 
@@ -149,6 +150,7 @@ export default function Home() {
           onSelect={(project, trigger) => openModal({ kind: "project", project }, trigger)}
           onViewScreenshot={viewScreenshot} highlighted={target === "projects-heading"} />
         <BrandMarquee />
+        <PixlintSection />
         <PortfolioSections target={target} onNavigate={navigate} onContact={(trigger) => openModal({ kind: "contact" }, trigger)} />
       </main>
       <Footer onNavigate={navigate} />

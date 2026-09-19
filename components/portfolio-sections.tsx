@@ -97,6 +97,7 @@ export function PortfolioSections({ target, onNavigate, onContact }: PortfolioSe
             <h2 id="about-title" tabIndex={-1}>A decade of building.<br />Rooted in curiosity.</h2>
             <p>I&apos;m <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="pf-link" aria-label="Elvin Manuel on LinkedIn (opens in a new tab)">Elvin Manuel</a>, a software engineer and IT specialist with over 10 years in software development. I started freelancing on small projects back in 2014, sharpening my skills along the way before going professional in 2016.</p>
             <p>My background spans three worlds &mdash; hardware, networking, and software &mdash; which gives me a full-stack perspective on how systems actually work. From event registration platforms to interactive games and AR experiences, and now AI-powered development tools, I enjoy turning complex problems into clean, usable solutions.</p>
+            <p>I also run <a href="https://pixlint.com" target="_blank" rel="noopener noreferrer" className="pf-link" aria-label="Pixel Interactive (opens in a new tab)">Pixel Interactive</a>, an event technology company building interactive photobooths, mini games, and AI experiences for brands across the Philippines.</p>
             <a className="pf-link" href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="More about my background on LinkedIn (opens in a new tab)">More about my background ↗</a>
           </div>
           <div className={`pf-skill-columns${highlight("skills")}`} id="skills" tabIndex={-1} role="region" aria-label="Development skills">
@@ -178,9 +179,10 @@ export function PortfolioSections({ target, onNavigate, onContact }: PortfolioSe
         </div>
         <div className="pf-contact-actions">
           <button className="pf-btn pf-btn-light" type="button" onClick={(event) => onContact(event.currentTarget)} aria-haspopup="dialog">Send a message ↗</button>
+          <a className="pf-btn pf-btn-primary pf-btn-business" href="https://pixlint.com/contact" target="_blank" rel="noopener noreferrer">Event tech inquiry ↗</a>
           <a className="pf-link" href={`mailto:${profile.email}`}>Email me directly ↗</a>
           <a className="pf-link" href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="View professional profile on LinkedIn (opens in a new tab)">View professional profile ↗</a>
-          <small>Email opens your mail app.</small>
+          <small>Email opens your mail app. Event inquiries go to Pixel Interactive.</small>
         </div>
       </motion.section>
     </>

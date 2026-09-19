@@ -20,8 +20,15 @@ const jsonLd = {
   email: profile.email,
   jobTitle: 'Software Engineer & IT Specialist',
   description: siteDescription,
-  sameAs: [profile.github, profile.linkedin],
+  sameAs: [profile.github, profile.linkedin, 'https://pixlint.com'],
   knowsAbout: ['Software Engineering', 'Web Development', 'Game Development', 'IT Infrastructure', 'AI Integration', 'LLM APIs', 'Electron', 'C#', 'Unity', 'React', 'Next.js', 'PHP', 'Network Administration', 'Local AI', 'Ollama'],
+  founder: {
+    '@type': 'Organization',
+    name: 'Pixel Interactive',
+    url: 'https://pixlint.com',
+    description: 'Interactive event technology company offering photobooths, mini games, AI experiences, and custom activations.',
+    areaServed: 'Philippines',
+  },
 }
 
 export const metadata: Metadata = {

@@ -185,3 +185,57 @@ export const defaultBrands: BrandEntry[] = [
   { id: "b-php", name: "PHP", category: "tech" },
   { id: "b-nodejs", name: "Node.js", category: "tech" },
 ]
+
+// Pixel Interactive (Pixlint) business data
+export interface PixlintService {
+  id: string
+  icon: string
+  title: string
+  description: string
+  features: string[]
+}
+
+export interface PixlintStat {
+  value: string
+  label: string
+}
+
+export const pixlintUrl = "https://pixlint.com"
+
+export const pixlintServices: PixlintService[] = [
+  {
+    id: "photobooths",
+    icon: "\uD83C\uDDE5",
+    title: "Photobooths",
+    description: "High-quality branded photo experiences with instant sharing, animated GIFs, and live gallery walls.",
+    features: ["Custom branded overlays", "Instant print & digital sharing", "Live gallery wall display", "QR code delivery"],
+  },
+  {
+    id: "minigames",
+    icon: "\uD83C\uDFAE",
+    title: "Mini Games",
+    description: "Custom-branded event games designed to drive engagement, foot traffic, and brand recall.",
+    features: ["Fully branded interface", "Leaderboard & scoring", "Touch, motion, or controller input", "Real-time engagement data"],
+  },
+  {
+    id: "ai",
+    icon: "\uD83E\uDD16",
+    title: "AI Experiences",
+    description: "AI-powered activations \u2014 face swap, AI art, real-time portrait generation, and personalized keepsakes.",
+    features: ["AI portrait & avatar generation", "Real-time face transformation", "Instant digital delivery", "Cloud gallery per event"],
+  },
+  {
+    id: "custom",
+    icon: "\u2728",
+    title: "Custom Packages",
+    description: "Bespoke multi-experience combinations built around your event goals with dedicated project management.",
+    features: ["Multi-experience combos", "Custom hardware setups", "Dedicated project manager", "Post-event analytics"],
+  },
+]
+
+export const pixlintStats: PixlintStat[] = [
+  { value: "100+", label: "Events Delivered" },
+  { value: "50K+", label: "Participants Engaged" },
+  { value: "4", label: "Experience Types" },
+  { value: "100%", label: "Client Satisfaction" },
+]

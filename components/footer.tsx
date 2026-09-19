@@ -1,8 +1,8 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, Linkedin, Mail, Facebook, ArrowUpRight } from "lucide-react"
-import { profile, type SectionId } from "@/lib/portfolio-data"
+import { Github, Linkedin, Mail, Facebook, ArrowUpRight, ExternalLink } from "lucide-react"
+import { profile, pixlintUrl, type SectionId } from "@/lib/portfolio-data"
 
 const socialLinks = [
   { href: profile.github, label: "GitHub", icon: Github },
@@ -66,7 +66,7 @@ export function Footer({ onNavigate }: { onNavigate: (section: SectionId) => voi
       </div>
 
       <div className="pf-footer-bottom">
-        <div>&copy; {new Date().getFullYear()} <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Elvin Manuel on LinkedIn (opens in a new tab)">{profile.name}</a>. Built with care.</div>
+        <div>&copy; {new Date().getFullYear()} <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Elvin Manuel on LinkedIn (opens in a new tab)">{profile.name}</a>. Built with care. Founder of <a href={pixlintUrl} target="_blank" rel="noopener noreferrer" className="pf-footer-pixlint-link">Pixel Interactive<ExternalLink size={10} aria-hidden="true" /></a></div>
         <a href="#home" onClick={(event) => { event.preventDefault(); onNavigate("home") }} className="pf-footer-top-link">
           Back to top <ArrowUpRight size={14} aria-hidden="true" />
         </a>
