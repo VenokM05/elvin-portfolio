@@ -34,6 +34,27 @@ interface BrandFormData {
 
 type AdminTab = "projects" | "brands"
 
+/** Upload a file to the server API, returns the public URL */
+async function uploadImageToServer(file: File): Promise<string> {
+  const dataUrl = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => resolve(reader.result as string)
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+  const res = await fetch("/api/upload", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ image: dataUrl, filename: file.name }),
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: "Upload failed" }))
+    throw new Error(err.error || "Upload failed")
+  }
+  const data = await res.json()
+  return data.url
+}
+
 const categoryLabels: Record<ProjectCategory, string> = {
   web: "Web application",
   systems: "Management system",
@@ -617,32 +638,38 @@ function ProjectForm({ project, onSave, onCancel }: ProjectFormProps) {
   const [formData, setFormData] = useState<ProjectFormData>(project)
   const [tagsInput, setTagsInput] = useState(project.tags.join(", "))
   const [aliasesInput, setAliasesInput] = useState(project.aliases.join(", "))
-
-  const readFileAsBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.onloadend = () => resolve(reader.result as string)
-      reader.onerror = reject
-      reader.readAsDataURL(file)
-    })
-  }
+  const [uploading, setUploading] = useState(false)
 
   const handleThumbnailUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
     if (file.size > 5 * 1024 * 1024) { alert("Image must be under 5MB"); return }
-    const dataUrl = await readFileAsBase64(file)
-    setFormData({ ...formData, image: dataUrl })
-    e.target.value = ""
+    setUploading(true)
+    try {
+      const url = await uploadImageToServer(file)
+      setFormData({ ...formData, image: url })
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Upload failed")
+    } finally {
+      setUploading(false)
+      e.target.value = ""
+    }
   }
 
   const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
     if (file.size > 5 * 1024 * 1024) { alert("Banner image must be under 5MB"); return }
-    const dataUrl = await readFileAsBase64(file)
-    setFormData({ ...formData, banner: dataUrl })
-    e.target.value = ""
+    setUploading(true)
+    try {
+      const url = await uploadImageToServer(file)
+      setFormData({ ...formData, banner: url })
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Upload failed")
+    } finally {
+      setUploading(false)
+      e.target.value = ""
+    }
   }
 
   const handleScreenshotsUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -650,9 +677,16 @@ function ProjectForm({ project, onSave, onCancel }: ProjectFormProps) {
     if (files.length === 0) return
     const oversized = files.find((f) => f.size > 5 * 1024 * 1024)
     if (oversized) { alert("Each image must be under 5MB"); return }
-    const dataUrls = await Promise.all(files.map(readFileAsBase64))
-    setFormData({ ...formData, screenshots: [...formData.screenshots, ...dataUrls] })
-    e.target.value = ""
+    setUploading(true)
+    try {
+      const urls = await Promise.all(files.map(uploadImageToServer))
+      setFormData({ ...formData, screenshots: [...formData.screenshots, ...urls] })
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Upload failed")
+    } finally {
+      setUploading(false)
+      e.target.value = ""
+    }
   }
 
   const removeScreenshot = (index: number) => {
@@ -747,10 +781,10 @@ function ProjectForm({ project, onSave, onCancel }: ProjectFormProps) {
                 <img src={formData.image} alt="Thumbnail preview" />
               </div>
             )}
-            <div className="admin-file-input">
+            <div className={`admin-file-input${uploading ? " admin-file-input-disabled" : ""}`}>
               <ImageIcon size={20} />
-              <span>{formData.image ? "Change thumbnail" : "Upload thumbnail"}</span>
-              <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleThumbnailUpload} />
+              <span>{uploading ? "Uploading..." : formData.image ? "Change thumbnail" : "Upload thumbnail"}</span>
+              <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleThumbnailUpload} disabled={uploading} />
             </div>
           </div>
 
@@ -770,10 +804,10 @@ function ProjectForm({ project, onSave, onCancel }: ProjectFormProps) {
                 </button>
               </div>
             )}
-            <div className="admin-file-input">
+            <div className={`admin-file-input${uploading ? " admin-file-input-disabled" : ""}`}>
               <Monitor size={20} />
-              <span>{formData.banner ? "Change banner" : "Upload banner image"}</span>
-              <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleBannerUpload} />
+              <span>{uploading ? "Uploading..." : formData.banner ? "Change banner" : "Upload banner image"}</span>
+              <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleBannerUpload} disabled={uploading} />
             </div>
             <p className="admin-hint">Falls back to the card thumbnail if not provided.</p>
           </div>
@@ -799,13 +833,13 @@ function ProjectForm({ project, onSave, onCancel }: ProjectFormProps) {
               </div>
             )}
             {formData.screenshots.length < 10 && (
-              <div className="admin-file-input">
+              <div className={`admin-file-input${uploading ? " admin-file-input-disabled" : ""}`}>
                 <ImageIcon size={20} />
-                <span>{formData.screenshots.length > 0 ? "Add more screenshots" : "Upload screenshots"}</span>
-                <input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={handleScreenshotsUpload} />
+                <span>{uploading ? "Uploading..." : formData.screenshots.length > 0 ? "Add more screenshots" : "Upload screenshots"}</span>
+                <input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={handleScreenshotsUpload} disabled={uploading} />
               </div>
             )}
-            <p className="admin-hint">JPEG, PNG, or WebP. Max 5MB each. Stored as base64 in browser.</p>
+            <p className="admin-hint">JPEG, PNG, or WebP. Max 5MB each. Stored on server.</p>
           </div>
 
           {/* Description */}
@@ -896,23 +930,22 @@ interface BrandFormProps {
 
 function BrandForm({ brand, onSave, onCancel }: BrandFormProps) {
   const [formData, setFormData] = useState<BrandFormData>(brand)
-
-  const readFileAsBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.onloadend = () => resolve(reader.result as string)
-      reader.onerror = reject
-      reader.readAsDataURL(file)
-    })
-  }
+  const [uploading, setUploading] = useState(false)
 
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
     if (file.size > 5 * 1024 * 1024) { alert("Logo must be under 5MB"); return }
-    const dataUrl = await readFileAsBase64(file)
-    setFormData({ ...formData, logo: dataUrl })
-    e.target.value = ""
+    setUploading(true)
+    try {
+      const url = await uploadImageToServer(file)
+      setFormData({ ...formData, logo: url })
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Upload failed")
+    } finally {
+      setUploading(false)
+      e.target.value = ""
+    }
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -996,10 +1029,10 @@ function BrandForm({ brand, onSave, onCancel }: BrandFormProps) {
                 </button>
               </div>
             )}
-            <div className="admin-file-input">
+            <div className={`admin-file-input${uploading ? " admin-file-input-disabled" : ""}`}>
               <ImageIcon size={20} />
-              <span>{formData.logo ? "Change logo" : "Upload logo"}</span>
-              <input type="file" accept="image/jpeg,image/png,image/webp,image/svg+xml" onChange={handleLogoUpload} />
+              <span>{uploading ? "Uploading..." : formData.logo ? "Change logo" : "Upload logo"}</span>
+              <input type="file" accept="image/jpeg,image/png,image/webp,image/svg+xml" onChange={handleLogoUpload} disabled={uploading} />
             </div>
             <p className="admin-hint">PNG, SVG, or WebP recommended. Max 5MB. Falls back to text if not provided.</p>
           </div>

@@ -617,6 +617,16 @@
   cursor: pointer;
 }
 
+.admin-file-input-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  border-style: dotted;
+}
+
+.admin-file-input-disabled input[type="file"] {
+  cursor: not-allowed;
+}
+
 /* ─── Link Toggle ─── */
 
 .admin-link-section {
