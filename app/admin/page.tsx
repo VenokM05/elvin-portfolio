@@ -97,8 +97,8 @@ export default function AdminPage() {
     if (stored) {
       try {
         const parsed = JSON.parse(stored) as BrandEntry[]
-        if (parsed.length > 0) { setBrands(parsed); return }
-      } catch { /* ignore */ }
+        if (Array.isArray(parsed)) { setBrands(parsed); return }
+      } catch { /* fall through to defaults */ }
     }
     setBrands(defaultBrands)
     localStorage.setItem("portfolio_brands", JSON.stringify(defaultBrands))
@@ -127,9 +127,13 @@ export default function AdminPage() {
     const project = projects.find((p) => p.id === id)
     if (confirm(`Delete "${project?.title}"? This cannot be undone.`)) {
       const updated = projects.filter((p) => p.id !== id)
-      setProjects(updated)
-      localStorage.setItem("portfolio_projects", JSON.stringify(updated))
-      notify(`"${project?.title}" deleted successfully`)
+      try {
+        localStorage.setItem("portfolio_projects", JSON.stringify(updated))
+        setProjects(updated)
+        notify(`"${project?.title}" deleted successfully`)
+      } catch {
+        notify("Failed to save: storage quota may be exceeded", "error")
+      }
     }
   }
 
@@ -191,17 +195,25 @@ export default function AdminPage() {
       notify(`"${project.title}" added successfully`)
     }
 
-    setProjects(updated)
-    localStorage.setItem("portfolio_projects", JSON.stringify(updated))
-    setShowForm(false)
-    setEditingProject(null)
+    try {
+      localStorage.setItem("portfolio_projects", JSON.stringify(updated))
+      setProjects(updated)
+      setShowForm(false)
+      setEditingProject(null)
+    } catch {
+      notify("Failed to save: storage quota may be exceeded. Try using smaller images.", "error")
+    }
   }
 
   const handleReset = () => {
     if (confirm("Reset all projects to default? This will remove all your custom changes.")) {
-      setProjects(defaultProjects)
-      localStorage.setItem("portfolio_projects", JSON.stringify(defaultProjects))
-      notify("Projects reset to defaults")
+      try {
+        localStorage.setItem("portfolio_projects", JSON.stringify(defaultProjects))
+        setProjects(defaultProjects)
+        notify("Projects reset to defaults")
+      } catch {
+        notify("Failed to reset: storage error", "error")
+      }
     }
   }
 
@@ -209,9 +221,13 @@ export default function AdminPage() {
     const brand = brands.find((b) => b.id === id)
     if (confirm(`Delete brand "${brand?.name}"? This cannot be undone.`)) {
       const updated = brands.filter((b) => b.id !== id)
-      setBrands(updated)
-      localStorage.setItem("portfolio_brands", JSON.stringify(updated))
-      notify(`"${brand?.name}" deleted successfully`)
+      try {
+        localStorage.setItem("portfolio_brands", JSON.stringify(updated))
+        setBrands(updated)
+        notify(`"${brand?.name}" deleted successfully`)
+      } catch {
+        notify("Failed to save: storage quota may be exceeded", "error")
+      }
     }
   }
 
@@ -258,17 +274,25 @@ export default function AdminPage() {
       updated = [...brands, brand]
       notify(`"${brand.name}" added successfully`)
     }
-    setBrands(updated)
-    localStorage.setItem("portfolio_brands", JSON.stringify(updated))
-    setShowBrandForm(false)
-    setEditingBrand(null)
+    try {
+      localStorage.setItem("portfolio_brands", JSON.stringify(updated))
+      setBrands(updated)
+      setShowBrandForm(false)
+      setEditingBrand(null)
+    } catch {
+      notify("Failed to save: storage quota may be exceeded. Try using smaller images.", "error")
+    }
   }
 
   const handleBrandReset = () => {
     if (confirm("Reset all brands to default? This will remove all your custom changes.")) {
-      setBrands(defaultBrands)
-      localStorage.setItem("portfolio_brands", JSON.stringify(defaultBrands))
-      notify("Brands reset to defaults")
+      try {
+        localStorage.setItem("portfolio_brands", JSON.stringify(defaultBrands))
+        setBrands(defaultBrands)
+        notify("Brands reset to defaults")
+      } catch {
+        notify("Failed to reset: storage error", "error")
+      }
     }
   }
 

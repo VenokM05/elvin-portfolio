@@ -21,14 +21,17 @@ function useBrands(): BrandEntry[] {
 
     const onVisibility = () => { if (document.visibilityState === "visible") load() }
     const onPageShow = () => load()
+    const onFocus = () => load()
     const onStorage = (e: StorageEvent) => { if (e.key === "portfolio_brands") load() }
 
     document.addEventListener("visibilitychange", onVisibility)
     window.addEventListener("pageshow", onPageShow)
+    window.addEventListener("focus", onFocus)
     window.addEventListener("storage", onStorage)
     return () => {
       document.removeEventListener("visibilitychange", onVisibility)
       window.removeEventListener("pageshow", onPageShow)
+      window.removeEventListener("focus", onFocus)
       window.removeEventListener("storage", onStorage)
     }
   }, [])

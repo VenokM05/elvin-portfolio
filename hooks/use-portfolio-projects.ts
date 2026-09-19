@@ -36,13 +36,16 @@ export function usePortfolioProjects() {
       if (event.key === "portfolio_projects" || event.key === null) sync()
     }
     const visible = () => { if (document.visibilityState === "visible") sync() }
+    const focus = () => sync()
     sync()
     window.addEventListener("storage", storage)
     window.addEventListener("pageshow", sync)
+    window.addEventListener("focus", focus)
     document.addEventListener("visibilitychange", visible)
     return () => {
       window.removeEventListener("storage", storage)
       window.removeEventListener("pageshow", sync)
+      window.removeEventListener("focus", focus)
       document.removeEventListener("visibilitychange", visible)
     }
   }, [])
