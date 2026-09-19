@@ -111,6 +111,41 @@ export const projects: Project[] = [
     tags: ["Electron", "TypeScript", "AI Agents", "Local-first", "Task Automation", "Plugin SDK"],
     link: "https://pixlint.com/projects/norse/presentation-deck.html", aliases: ["odin", "desktop", "autonomous", "norse"],
   },
+  {
+    id: "travereels", title: "Travereels", category: "web", label: "Web application",
+    image: "/travereels.png",
+    description: "The ultimate social media platform for modern travelers who want to skip the hassle of trip planning. Powered by smart AI, Travereel delivers instant travel suggestions and tailored itineraries so you can spend less time searching and more time exploring. Connect with a global community, share your journeys, and unlock your next adventure in seconds.",
+    tags: ["React", "Node.js", "TypeScript", "Tailwind"],
+    link: "", aliases: ["travel", "ai", "journey", "search"],
+  },
+  {
+    id: "snappy", title: "Snappy", category: "web", label: "Web application",
+    image: "/snappy.png",
+    description: "The digital photo booth app designed to turn everyday moments into instant, shareable memories. No lines, no waiting\u2014just pure fun.",
+    tags: ["React", "Node.js", "TypeScript"],
+    link: "", aliases: ["wedding", "photobooth", "digital", "birthday"],
+  },
+  {
+    id: "queuing", title: "Queuing Management", category: "systems", label: "Management system",
+    image: "/queuing.png",
+    description: "Streamline your car show operations with an intelligent Queue Management System. Built specifically for automotive events, it seamlessly handles test drive bookings, walk-in inquiries, and VIP vehicle reservations. Replace crowded lines with a frictionless digital queue that keeps car enthusiasts engaged and captures high-value leads instantly.",
+    tags: ["PHP", "Laravel", "MySQL"],
+    link: "", aliases: ["queuing", "tracking", "car", "inquiry", "reservation"],
+  },
+  {
+    id: "kojie", title: "Kojie-san", category: "games", label: "Interactive game",
+    image: "/kojie.png",
+    description: "An engaging, interactive digital matching game designed exclusively for the Kojie-san booth at the Watsons Expo. The activation drives high foot traffic and brand recall by challenging attendees to fast-paced product matching, seamlessly turning booth visitors into active consumers through gamified rewards.",
+    tags: ["Unity"],
+    link: "", aliases: ["interactive", "expo", "booth", "watsons", "game"],
+  },
+  {
+    id: "nan-kid", title: "NAN Kid", category: "games", label: "Interactive game",
+    image: "/nan.png",
+    description: "An immersive dual-game activation created for NAN Kid to educate parents on early childhood nutrition. The experience features an Interactive History Wall that beautifully displays the brand\u2019s scientific legacy, alongside \u201CAmazing Match\u201D\u2014a gamified digital experience where users match premium ingredients to a designated glass of milk to reinforce product benefits in a fun, memorable way.",
+    tags: ["Unity"],
+    link: "", aliases: ["interactive", "expo", "booth", "game", "kid", "milk"],
+  },
 ]
 
 export const projectFilters: { value: ProjectFilter; label: string }[] = [
